@@ -8,8 +8,8 @@ import SwiftUI
 import Combine
 import Foundation
 
-struct New_Workout: View {
-    @StateObject var apiService = PostWorkoutAPI()
+struct New_ST_Workout: View {
+    //@StateObject var apiService = PostWorkoutAPI()
     @State private var workoutTypeSelection = ""
     @State private var musclesInput: String = ""
     @State private var workoutsInput: String = ""
@@ -336,7 +336,7 @@ struct New_Workout: View {
                         Button("Submit Workout") {
                             isButtonTapped = true
                             /*apiService.postData(name: <#T##String#>, muscles: <#T##String#>, Workout: <#T##String#>, Sets: <#T##Int#>, Reps: <#T##Int#>, Weight: <#T##Double#>)*/
-                            apiService.postData(name: name, ExerciseType: typeOfWorkoutSelected, muscles: musclesInput, Workout: workoutsInput, Sets: setsInput, Reps: repsInput, Weight: weightInput, weightMeasurement: weightMeasurementInput, username: username)
+                           /* apiService.postData(name: name, ExerciseType: typeOfWorkoutSelected, muscles: musclesInput, Workout: workoutsInput, Sets: setsInput, Reps: repsInput, Weight: weightInput, weightMeasurement: weightMeasurementInput, username: username)*/
                             
                             
                         }
