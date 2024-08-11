@@ -33,7 +33,7 @@ struct Exercise_Prompt: View {
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(10)
-                NavigationLink(destination:New_Workout()) {Text("Strength Training")}
+                NavigationLink(destination:New_ST_Workout()) {Text("Strength Training")}
                     .padding()
                     .background(Color.blue)
                     .foregroundColor(.white)
