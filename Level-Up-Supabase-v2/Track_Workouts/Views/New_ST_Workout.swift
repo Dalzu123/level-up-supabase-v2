@@ -370,7 +370,9 @@ struct New_ST_Workout: View {
                 }
 
     
-
+#Preview {
+    New_ST_Workout()
+}
         
         
         
