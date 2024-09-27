@@ -10,7 +10,7 @@ import Combine
 import Foundation
 import Supabase
 
-let database = DatabaseManager()
+
 
 struct New_ST_Workout: View {
     //@StateObject var apiService = PostWorkoutAPI()
@@ -39,6 +39,7 @@ struct New_ST_Workout: View {
     @State private var typeOfWorkoutSelected = ""
     @State private var username = ""
     @State private var musclestest2 = []
+    private var database = DatabaseManager()
     struct Muscle: Decodable {
         let id: Int
         let name: String
@@ -56,7 +57,7 @@ struct New_ST_Workout: View {
     let muscles = ["Select","Back", "Biceps", "Legs", "Chest", "Triceps","Shoulders","Abs"]
 
     
-    let musclestest3: () = database.fetchMuscles()
+  //  let musclestest3: () = database.fetchMuscles()
     /*init() async {do {let musclestest = try await supabase.from("muscles").select().execute()
     }   catch {print(Error.self)}
 }
@@ -386,6 +387,12 @@ struct New_ST_Workout: View {
                 }
                 
                 
+            }.onAppear{
+                Task{
+                    let response = await database.fetchMuscles()
+                    musclestest2 = response
+                    print(musclestest2)
+                }
             }
             
         }
