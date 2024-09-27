@@ -3,10 +3,14 @@
 //  Level-Up
 //
 //  Created by Diego Alzugaray on 5/12/24.
+//SSH Key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF4tAicH9xqeg0iOxoY4Ru9rga0JJFegFD/xDSPl/uSB
 //
 import SwiftUI
 import Combine
 import Foundation
+import Supabase
+
+let database = DatabaseManager()
 
 struct New_ST_Workout: View {
     //@StateObject var apiService = PostWorkoutAPI()
@@ -34,15 +38,34 @@ struct New_ST_Workout: View {
     //@State private var cardioTime = ""
     @State private var typeOfWorkoutSelected = ""
     @State private var username = ""
+    @State private var musclestest2 = []
+    struct Muscle: Decodable {
+        let id: Int
+        let name: String
+    }
     
-
+    let supabase = SupabaseClient(supabaseURL: URL(string: String("https://wqhizsnuzwwyfsvifqrx.supabase.co"))!, supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxaGl6c251end3eWZzdmlmcXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMzNzQ4NzMsImV4cCI6MjAzODk1MDg3M30.AGxFi_2VoMGZzBInq6O2wL-Ky96r8i6bHsrQAG1bJNY")
     
     
     
- 
+    
+    
+    
     let typeOfWorkout = ["--Select--","Traditional", "Super Set", "Drop Set"]
     
     let muscles = ["Select","Back", "Biceps", "Legs", "Chest", "Triceps","Shoulders","Abs"]
+
+    
+    let musclestest3: () = database.fetchMuscles()
+    /*init() async {do {let musclestest = try await supabase.from("muscles").select().execute()
+    }   catch {print(Error.self)}
+}
+    do {
+        try musclestest2 = supabase.from("muscles").select().execute()}
+        catch print(Error)
+   */
+    
+    
     //let sets = ["1","2","3","4","5","6"]
     let sets = Array(1...6)
     let reps = Array(1...20)
@@ -126,248 +149,250 @@ struct New_ST_Workout: View {
         //@State private var typeOfWorkoutSelected = ""
         NavigationView {
             VStack {
-               /* Image("ProgressLogo1")
-                    .resizable() // Allows the image to be resized
-                    .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
-                    .frame(width: 400, height: 200) // Sets the frame size of the image
-                    .clipped()
-                    */
-                    
-                    Text("Type of Strength Training")
-                        .padding(.top, 10)
-                    Picker("", selection: $typeOfWorkoutSelected)
-                    {
-                        ForEach(typeOfWorkout, id: \.self) {
+                /* Image("ProgressLogo1")
+                 .resizable() // Allows the image to be resized
+                 .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
+                 .frame(width: 400, height: 200) // Sets the frame size of the image
+                 .clipped()
+                 */
+                
+                Text("Type of Strength Training")
+                    .padding(.top, 10)
+                Picker("", selection: $typeOfWorkoutSelected)
+                {
+                    ForEach(typeOfWorkout, id: \.self) {
+                        Text($0)
+                    }
+                }
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.blue, lineWidth: 1)
+                )
+                
+                Text("Which muscle?")
+                Picker("Select Muscle", selection: $musclesInput) {
+                    ForEach(muscles, id: \.self) {
+                        Text($0)
+                    }
+                }
+                .pickerStyle(.menu)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.blue, lineWidth: 1)
+                )
+                //.clipShape(RoundedRectangle(cornerRadius: 8))
+                
+                //.pickerStyle(.menu)
+                .imageScale(.large)
+                .foregroundColor(.accentColor)
+                // .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/,width: 1)
+                
+                if musclesInput == "Back" {
+                    Text("Which workout?")
+                    Picker("Select Workout", selection: $workoutsInput) {
+                        ForEach(backWorkouts, id: \.self) {
                             Text($0)
                         }
                     }
+                    
+                    .pickerStyle(.menu)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.blue, lineWidth: 1)
                     )
-
-                        Text("Which muscle?")
-                        Picker("Select Muscle", selection: $musclesInput) {
-                            ForEach(muscles, id: \.self) {
-                                Text($0)
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                } else if musclesInput == "Chest" {
+                    Text("Which workout?")
+                    Picker("Select Workout", selection: $workoutsInput) {
+                        ForEach(chestWorkouts, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                    .border(Color.blue,width: 1)
+                } else if musclesInput == "Legs" {
+                    Text("Which workout?")
+                    Picker("Select Workout", selection: $workoutsInput) {
+                        ForEach(legWorkouts, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                } else if musclesInput == "Triceps" {
+                    Text("Which workout?")
+                    Picker("Select Workout", selection: $workoutsInput) {
+                        ForEach(tricepWorkouts, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                } else if musclesInput == "Biceps" {
+                    Text("Which workout?")
+                    Picker("Select Workout", selection: $workoutsInput) {
+                        ForEach(bicepWorkouts, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                }else if musclesInput == "Shoulders" {
+                    Text("Which workout?")
+                    Picker("Select Workout", selection: $workoutsInput) {
+                        ForEach(shoulderWorkouts, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                }else if musclesInput == "Abs" {
+                    Text("Which workout?")
+                    Picker("Select Workout", selection: $workoutsInput) {
+                        ForEach(abWorkouts, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                }
+                
+                //Sets textbox
+                HStack {
+                    Text("Sets")
+                        .foregroundColor(.blue) // Customize label color if needed
+                        .font(.headline)
+                    Picker("", selection: $setsInput) {
+                        ForEach(sets, id: \.self) {
+                            sets in
+                            Text("\(sets)")
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+                    .padding()
+                    // } ( Removing the end of the HStack )
+                    
+                    //Reps textbox
+                    //HStack { ( Removing the beginning of this HStack )
+                    Text("Reps")
+                        .foregroundColor(.blue) // Customize label color if needed
+                        .font(.headline)
+                    Picker("", selection: $repsInput) {
+                        ForEach(reps, id: \.self) {
+                            reps in
+                            Text("\(reps)")
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+                    .padding()
+                }
+                
+                //Weight checkbox
+                HStack {
+                    Text("Weight")
+                        .foregroundColor(.blue) // Customize label color if needed
+                        .font(.headline)
+                    TextField("Weight", text: Binding(
+                        get: { "" },
+                        set: {
+                            if let newValue = Double($0) {
+                                weightInput = newValue
                             }
                         }
-                        .pickerStyle(.menu)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.blue, lineWidth: 1)
-                        )
-                        //.clipShape(RoundedRectangle(cornerRadius: 8))
-                        
-                        //.pickerStyle(.menu)
-                        .imageScale(.large)
-                        .foregroundColor(.accentColor)
-                        // .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/,width: 1)
-                        
-                        if musclesInput == "Back" {
-                            Text("Which workout?")
-                            Picker("Select Workout", selection: $workoutsInput) {
-                                ForEach(backWorkouts, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            
-                            .pickerStyle(.menu)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                        } else if musclesInput == "Chest" {
-                            Text("Which workout?")
-                            Picker("Select Workout", selection: $workoutsInput) {
-                                ForEach(chestWorkouts, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                            .border(Color.blue,width: 1)
-                        } else if musclesInput == "Legs" {
-                            Text("Which workout?")
-                            Picker("Select Workout", selection: $workoutsInput) {
-                                ForEach(legWorkouts, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                        } else if musclesInput == "Triceps" {
-                            Text("Which workout?")
-                            Picker("Select Workout", selection: $workoutsInput) {
-                                ForEach(tricepWorkouts, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                        } else if musclesInput == "Biceps" {
-                            Text("Which workout?")
-                            Picker("Select Workout", selection: $workoutsInput) {
-                                ForEach(bicepWorkouts, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                        }else if musclesInput == "Shoulders" {
-                            Text("Which workout?")
-                            Picker("Select Workout", selection: $workoutsInput) {
-                                ForEach(shoulderWorkouts, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                        }else if musclesInput == "Abs" {
-                            Text("Which workout?")
-                            Picker("Select Workout", selection: $workoutsInput) {
-                                ForEach(abWorkouts, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
+                    ))
+                    .padding()
+                    // }
+                    //Weight measurement picklist
+                    Text("Lbs or KGs?" )
+                        .padding(.top,10)
+                    Picker("Select Weight Measurement", selection: $weightMeasurementInput) {
+                        ForEach(weightMeasurement, id: \.self) {
+                            Text($0)
                         }
-                        
-                        //Sets textbox
-                        HStack {
-                            Text("Sets")
-                                .foregroundColor(.blue) // Customize label color if needed
-                                .font(.headline)
-                            Picker("", selection: $setsInput) {
-                                ForEach(sets, id: \.self) {
-                                    sets in
-                                    Text("\(sets)")
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                            .padding()
-                            // } ( Removing the end of the HStack )
-                            
-                            //Reps textbox
-                            //HStack { ( Removing the beginning of this HStack )
-                            Text("Reps")
-                                .foregroundColor(.blue) // Customize label color if needed
-                                .font(.headline)
-                            Picker("", selection: $repsInput) {
-                                ForEach(reps, id: \.self) {
-                                    reps in
-                                    Text("\(reps)")
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                            .padding()
-                        }
-                        
-                        //Weight checkbox
-                        HStack {
-                            Text("Weight")
-                                .foregroundColor(.blue) // Customize label color if needed
-                                .font(.headline)
-                            TextField("Weight", text: Binding(
-                                get: { "" },
-                                set: {
-                                    if let newValue = Double($0) {
-                                        weightInput = newValue
-                                    }
-                                }
-                            ))
-                            .padding()
-                            // }
-                            //Weight measurement picklist
-                            Text("Lbs or KGs?" )
-                                .padding(.top,10)
-                            Picker("Select Weight Measurement", selection: $weightMeasurementInput) {
-                                ForEach(weightMeasurement, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            //.padding()
-                        }
+                    }
+                    .pickerStyle(.menu)
+                    //.padding()
+                }
                 Text("Email (Will become Username)")
                 TextField("Email", text: $username)
-                        //Submit workout via API call
-                        Button("Submit Workout") {
-                            isButtonTapped = true
-                            /*apiService.postData(name: <#T##String#>, muscles: <#T##String#>, Workout: <#T##String#>, Sets: <#T##Int#>, Reps: <#T##Int#>, Weight: <#T##Double#>)*/
-                           /* apiService.postData(name: name, ExerciseType: typeOfWorkoutSelected, muscles: musclesInput, Workout: workoutsInput, Sets: setsInput, Reps: repsInput, Weight: weightInput, weightMeasurement: weightMeasurementInput, username: username)*/
-                            
-                            
-                        }
-                        .padding()
-                        .background(Color.black)
-                        .shadow(color: .gray, radius: 3, x: 0, y: 2)
-                        .border(Color.blue, width: 2)
-                        
-                       /* if let responseData = apiService.responseData {
-                            // Display data from the API response
-                        }*/
-                        
-                        if isButtonTapped{
-                            /*Text("Muscle: \(musclesInput),Workout: \(workoutsInput), Sets: \(setsInput), Reps: \(repsInput), Weight: \(weightInput)")
-                             .font(.title)
-                             .padding()
-                             */
-                            if($setsInput.wrappedValue > 0 && $repsInput.wrappedValue > 0 && $weightInput.wrappedValue > 0.0){
-                                let results3 = (Double($setsInput.wrappedValue) * Double($repsInput.wrappedValue) * $weightInput.wrappedValue)
-                                
-                                Text("Weight moved this Workout \(String(format: "%.2f", results3)) \(weightMeasurementInput)")
-                            }
-                            
-                        }
-                        
+                //Submit workout via API call
+                Button("Submit Workout") {
+                    isButtonTapped = true
+                    /*apiService.postData(name: <#T##String#>, muscles: <#T##String#>, Workout: <#T##String#>, Sets: <#T##Int#>, Reps: <#T##Int#>, Weight: <#T##Double#>)*/
+                    /* apiService.postData(name: name, ExerciseType: typeOfWorkoutSelected, muscles: musclesInput, Workout: workoutsInput, Sets: setsInput, Reps: repsInput, Weight: weightInput, weightMeasurement: weightMeasurementInput, username: username)*/
+                    
+                    
                 }
-                                                        
-                        }
+                .padding()
+                .background(Color.black)
+                .shadow(color: .gray, radius: 3, x: 0, y: 2)
+                .border(Color.blue, width: 2)
+                
+                /* if let responseData = apiService.responseData {
+                 // Display data from the API response
+                 }*/
+                
+                if isButtonTapped{
+                    /*Text("Muscle: \(musclesInput),Workout: \(workoutsInput), Sets: \(setsInput), Reps: \(repsInput), Weight: \(weightInput)")
+                     .font(.title)
+                     .padding()
+                     */
+                    if($setsInput.wrappedValue > 0 && $repsInput.wrappedValue > 0 && $weightInput.wrappedValue > 0.0){
+                        let results3 = (Double($setsInput.wrappedValue) * Double($repsInput.wrappedValue) * $weightInput.wrappedValue)
+                        
+                        Text("Weight moved this Workout \(String(format: "%.2f", results3)) \(weightMeasurementInput)")
                     }
                     
                 }
+                
+                
+            }
+            
+        }
+    }
+    
+
+}
 
     
 #Preview {
