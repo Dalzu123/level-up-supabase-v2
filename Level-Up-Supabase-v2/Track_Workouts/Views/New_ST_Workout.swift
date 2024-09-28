@@ -38,7 +38,8 @@ struct New_ST_Workout: View {
     //@State private var cardioTime = ""
     @State private var typeOfWorkoutSelected = ""
     @State private var username = ""
-    @State private var musclestest2 = []
+    @State private var muscles = []
+    @State private var workouts = []
     private var database = DatabaseManager()
     struct Muscle: Decodable {
         let id: Int
@@ -54,18 +55,9 @@ struct New_ST_Workout: View {
     
     let typeOfWorkout = ["--Select--","Traditional", "Super Set", "Drop Set"]
     
-    let muscles = ["Select","Back", "Biceps", "Legs", "Chest", "Triceps","Shoulders","Abs"]
+    //let musclesOld = ["Select","Back", "Biceps", "Legs", "Chest", "Triceps","Shoulders","Abs"]
 
-    
-  //  let musclestest3: () = database.fetchMuscles()
-    /*init() async {do {let musclestest = try await supabase.from("muscles").select().execute()
-    }   catch {print(Error.self)}
-}
-    do {
-        try musclestest2 = supabase.from("muscles").select().execute()}
-        catch print(Error)
-   */
-    
+
     
     //let sets = ["1","2","3","4","5","6"]
     let sets = Array(1...6)
@@ -172,8 +164,7 @@ struct New_ST_Workout: View {
                 
                 Text("Which muscle?")
                 Picker("Select Muscle", selection: $musclesInput) {
-                    ForEach(muscles, id: \.self) {
-                        Text($0)
+                    ForEach(0..<$muscles.count) {print(muscles))
                     }
                 }
                 .pickerStyle(.menu)
@@ -390,8 +381,11 @@ struct New_ST_Workout: View {
             }.onAppear{
                 Task{
                     let response = await database.fetchMuscles()
-                    musclestest2 = response
-                    print(musclestest2)
+                    muscles = response
+                    let response2 = await database.fetchWorkouts()
+                    workouts = response2
+                    print(muscles)
+                    print(workouts)
                 }
             }
             
