@@ -38,14 +38,13 @@ struct New_ST_Workout: View {
     //@State private var cardioTime = ""
     @State private var typeOfWorkoutSelected = ""
     @State private var username = ""
-    @State private var muscles = []
     @State private var workouts = []
     private var database = DatabaseManager()
-    struct Muscle: Decodable {
+    /*struct Muscle: Decodable, Hashable {
         let id: Int
         let name: String
-    }
-    
+    }*/
+    @State private var muscles:[Muscle] = []
     let supabase = SupabaseClient(supabaseURL: URL(string: String("https://wqhizsnuzwwyfsvifqrx.supabase.co"))!, supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxaGl6c251end3eWZzdmlmcXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMzNzQ4NzMsImV4cCI6MjAzODk1MDg3M30.AGxFi_2VoMGZzBInq6O2wL-Ky96r8i6bHsrQAG1bJNY")
     
     
@@ -55,7 +54,7 @@ struct New_ST_Workout: View {
     
     let typeOfWorkout = ["--Select--","Traditional", "Super Set", "Drop Set"]
     
-    //let musclesOld = ["Select","Back", "Biceps", "Legs", "Chest", "Triceps","Shoulders","Abs"]
+    let musclesOld = ["Select","Back", "Biceps", "Legs", "Chest", "Triceps","Shoulders","Abs"]
 
 
     
@@ -164,7 +163,7 @@ struct New_ST_Workout: View {
                 
                 Text("Which muscle?")
                 Picker("Select Muscle", selection: $musclesInput) {
-                    ForEach(0..<$muscles.count) {print(muscles))
+                    ForEach(muscles, id: \.self) { item in Text(item.name)
                     }
                 }
                 .pickerStyle(.menu)
