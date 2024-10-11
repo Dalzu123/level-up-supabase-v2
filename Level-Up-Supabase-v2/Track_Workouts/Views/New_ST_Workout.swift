@@ -15,7 +15,7 @@ import Supabase
 struct New_ST_Workout: View {
     //@StateObject var apiService = PostWorkoutAPI()
     @State private var workoutTypeSelection = ""
-    @State private var musclesInput: String = ""
+    @State private var musclesInput: String = "Chest"
     @State private var workoutsInput: String = ""
     @State private var setsInput1 = ""
     @State private var repsInput1 = ""
@@ -163,14 +163,18 @@ struct New_ST_Workout: View {
                 
                 Text("Which muscle?")
                 Picker("Select Muscle", selection: $musclesInput) {
-                    ForEach(muscles, id: \.self) { item in Text(item.name)
+                    ForEach(muscles, id: \.self) { item in Text(item.name).tag(item.name)
                     }
                 }
-                .pickerStyle(.menu)
+                .pickerStyle(MenuPickerStyle())
+                .onChange(of: musclesInput) {
+                    print("Selected option changed")
+                }
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.blue, lineWidth: 1)
                 )
+                
                 //.clipShape(RoundedRectangle(cornerRadius: 8))
                 
                 //.pickerStyle(.menu)
