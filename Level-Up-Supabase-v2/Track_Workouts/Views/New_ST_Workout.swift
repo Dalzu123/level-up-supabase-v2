@@ -164,12 +164,12 @@ struct New_ST_Workout: View {
                 */
                 Text("Which muscle?")
                 Picker("Select Muscle", selection: $musclesInput) {
-                    ForEach(muscles, id: \.self) { item in Text(item.name).tag(item.name)
+                    ForEach(muscles, id: \.id) { item in Text(item.name).tag(item.name)
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
                 .onChange(of: musclesInput) {
-                    print("Selected option changed")
+                    print("successful change in muscle input")
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)

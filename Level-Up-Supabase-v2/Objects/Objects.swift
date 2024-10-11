@@ -8,9 +8,9 @@
 import Foundation
 import Supabase
 
-struct Muscle: Decodable, Hashable {
-    let id: Int
-    let name: String
+struct Muscle: Decodable,Identifiable, Hashable {
+    var id = UUID()
+    var name: String
 }
 
 struct Workout: Decodable, Hashable {
