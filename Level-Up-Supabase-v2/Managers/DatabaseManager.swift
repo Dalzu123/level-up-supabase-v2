@@ -8,16 +8,16 @@
 import Foundation
 import Supabase
 
-struct Muscle: Decodable, Hashable {
+/*struct Muscle: Decodable, Hashable {
     let id: Int
     let name: String
 }
 
-struct Workout: Decodable {
+struct Workout: Decodable, Hashable {
     let workoutid: Int
     let name: String
     let muscleid: Int
-}
+}*/
 
 class DatabaseManager {
     

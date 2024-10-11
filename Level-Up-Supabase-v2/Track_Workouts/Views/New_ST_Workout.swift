@@ -148,7 +148,8 @@ struct New_ST_Workout: View {
                  .clipped()
                  */
                 
-                Text("Type of Strength Training")
+                /* To add when we are ready to introduce dropsets and super sets
+                 Text("Type of Strength Training")
                     .padding(.top, 10)
                 Picker("", selection: $typeOfWorkoutSelected)
                 {
@@ -160,7 +161,7 @@ struct New_ST_Workout: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.blue, lineWidth: 1)
                 )
-                
+                */
                 Text("Which muscle?")
                 Picker("Select Muscle", selection: $musclesInput) {
                     ForEach(muscles, id: \.self) { item in Text(item.name).tag(item.name)
