@@ -16,6 +16,7 @@ struct New_ST_Workout: View {
     //@StateObject var apiService = PostWorkoutAPI()
     @State private var workoutTypeSelection = ""
     @State private var musclesInput: String = "Chest"
+    @State private var musclesID: Int = 1
     @State private var workoutsInput: String = ""
     @State private var setsInput1 = ""
     @State private var repsInput1 = ""
@@ -38,23 +39,24 @@ struct New_ST_Workout: View {
     //@State private var cardioTime = ""
     @State private var typeOfWorkoutSelected = ""
     @State private var username = ""
-    @State private var workouts = []
+    //@State private var workouts = []
     private var database = DatabaseManager()
     /*struct Muscle: Decodable, Hashable {
         let id: Int
         let name: String
     }*/
     @State private var muscles:[Muscle] = []
+    @State private var workouts:[Workout] = []
+    // Creating the connection to supabase
     let supabase = SupabaseClient(supabaseURL: URL(string: String("https://wqhizsnuzwwyfsvifqrx.supabase.co"))!, supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxaGl6c251end3eWZzdmlmcXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMzNzQ4NzMsImV4cCI6MjAzODk1MDg3M30.AGxFi_2VoMGZzBInq6O2wL-Ky96r8i6bHsrQAG1bJNY")
     
-    
-    
+
     
     
     
     let typeOfWorkout = ["--Select--","Traditional", "Super Set", "Drop Set"]
     
-    let musclesOld = ["Select","Back", "Biceps", "Legs", "Chest", "Triceps","Shoulders","Abs"]
+    
 
 
     
@@ -162,10 +164,13 @@ struct New_ST_Workout: View {
                         .stroke(Color.blue, lineWidth: 1)
                 )
                 */
+                
+                //Picklist for muscles
                 Text("Which muscle?")
                 Picker("Select Muscle", selection: $musclesInput) {
-                    ForEach(muscles, id: \.id) { item in Text(item.name).tag(item.name)
+                    ForEach(muscles, id: \.muscleid) { item in Text(item.name).tag(item.name)
                     }
+                    //musclesID = $muscles.muscleid
                 }
                 .pickerStyle(MenuPickerStyle())
                 .onChange(of: musclesInput) {
@@ -175,14 +180,26 @@ struct New_ST_Workout: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.blue, lineWidth: 1)
                 )
-                
-                //.clipShape(RoundedRectangle(cornerRadius: 8))
-                
-                //.pickerStyle(.menu)
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
-                // .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/,width: 1)
                 
+                // Picklist for workouts
+                Text("Which workout?")
+                Picker("Select Workout", selection: $workoutsInput) {
+                    ForEach(workouts, id: \.self) {
+                         item in Text(item.name).tag(item.name)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .onChange(of: workoutsInput) {
+                    print("successful change in workouts input")
+                }
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.blue, lineWidth: 1)
+                )
+                .imageScale(.large)
+                .foregroundColor(.accentColor)
                 if musclesInput == "Back" {
                     Text("Which workout?")
                     Picker("Select Workout", selection: $workoutsInput) {
@@ -387,7 +404,7 @@ struct New_ST_Workout: View {
                     let response = await database.fetchMuscles()
                     muscles = response
                     let response2 = await database.fetchWorkouts()
-                    workouts = response2
+                    workouts = response2.compactMap {$0 as? Workout}
                     print(muscles)
                     print(workouts)
                 }

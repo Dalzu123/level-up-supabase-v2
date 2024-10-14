@@ -8,13 +8,13 @@
 import Foundation
 import Supabase
 
-struct Muscle: Decodable,Identifiable, Hashable {
-    var id = UUID()
+struct Muscle: Decodable, Hashable {
+    var muscleid: Int//= UUID()
     var name: String
 }
 
 struct Workout: Decodable, Hashable {
-    let workoutid: Int
-    let name: String
-    let muscleid: Int
+    var workoutid: Int
+    var name: String
+    var muscleid: Int
 }
