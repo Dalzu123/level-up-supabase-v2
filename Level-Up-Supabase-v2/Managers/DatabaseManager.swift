@@ -31,7 +31,8 @@ class DatabaseManager {
             let muscles: [Muscle] = try await supabase.from("muscle").select().execute().value
             return muscles
         }
-        catch {print("You suck")}
+       // catch {print("You suck")}
+        catch {print(error)}
         
         /*let response = try await supabase.from("muscle").select()
          print(response)

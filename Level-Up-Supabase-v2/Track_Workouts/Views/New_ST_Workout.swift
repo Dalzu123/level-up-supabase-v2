@@ -16,7 +16,7 @@ struct New_ST_Workout: View {
     //@StateObject var apiService = PostWorkoutAPI()
     @State private var workoutTypeSelection = ""
     @State private var musclesInput: String = "Shoulders"
-    @State private var musclesID: Int = 1
+    @State private var musclesid: Int = 1
     @State private var workoutsInput: String = ""
     @State private var setsInput1 = ""
     @State private var repsInput1 = ""
@@ -147,10 +147,10 @@ struct New_ST_Workout: View {
                 //Picklist for muscles
                 Text("Which muscle?")
                 Picker("Select Muscle", selection: $musclesInput) {
-                    ForEach(muscles, id: \.muscleid) { item in Text(item.name).tag(item.name)
-                    }
-                    //musclesID = $muscles.muscleid
-                }
+                                   // ForEach(muscles, id: \.self) { item in Text(item.name)
+                                    ForEach(muscles, id: \.self) { item in Text(item.name).tag(item.name)
+                                    }
+                                }
                 .pickerStyle(MenuPickerStyle())
                 .onChange(of: musclesInput) {
                     print("successful change in muscle input")
