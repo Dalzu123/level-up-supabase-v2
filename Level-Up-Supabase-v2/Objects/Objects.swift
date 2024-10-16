@@ -9,7 +9,7 @@ import Foundation
 import Supabase
 
 struct Muscle: Decodable, Hashable {
-    var muscleid: Int//= UUID()
+    var id: Int//= UUID()
     var name: String
 }
 
