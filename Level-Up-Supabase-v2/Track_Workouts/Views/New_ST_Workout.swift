@@ -15,7 +15,7 @@ import Supabase
 struct New_ST_Workout: View {
     //@StateObject var apiService = PostWorkoutAPI()
     @State private var workoutTypeSelection = ""
-    @State private var musclesInput: String = ""
+    @State private var musclesInput: String = "Chest"
     @State private var musclesid: Int = 1
     @State private var workoutsInput: String = ""
     @State private var setsInput1 = ""
@@ -489,6 +489,10 @@ struct New_ST_Workout: View {
                  }*/
                 
                 if isButtonTapped{
+                    /*let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput)
+                    */
+                    let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput,muscle: musclesInput, workout: workoutsInput,sets: setsInput, reps: repsInput, weight: weightInput)
+                    insertWorkoutRecords(workoutrecord)
                     /*Text("Muscle: \(musclesInput),Workout: \(workoutsInput), Sets: \(setsInput), Reps: \(repsInput), Weight: \(weightInput)")
                      .font(.title)
                      .padding()

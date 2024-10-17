@@ -21,7 +21,7 @@ struct Workout: Decodable, Hashable {
 
 class DatabaseManager {
     
-
+    
     
     let supabase = SupabaseClient(supabaseURL: URL(string: String("https://wqhizsnuzwwyfsvifqrx.supabase.co"))!, supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxaGl6c251end3eWZzdmlmcXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMzNzQ4NzMsImV4cCI6MjAzODk1MDg3M30.AGxFi_2VoMGZzBInq6O2wL-Ky96r8i6bHsrQAG1bJNY")
     
@@ -31,7 +31,7 @@ class DatabaseManager {
             let muscles: [Muscle] = try await supabase.from("muscle").select().execute().value
             return muscles
         }
-       // catch {print("You suck")}
+        // catch {print("You suck")}
         catch {print(error)}
         
         /*let response = try await supabase.from("muscle").select()
@@ -53,4 +53,18 @@ class DatabaseManager {
         return []
     }
     
+    func insertWorkoutRecords(weightMeasurementType: String, muscle: String, workout: String, sets: Int, reps: Int, weight: Double) {
+        Task{
+            do {
+                let response3 = try await supabase
+                    .from("workoutRecords")
+                    /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
+                     */.insert(WorkoutRecord(weightMeasurementType: weightMeasurementType, muscle: muscle, workout: workout, sets: sets, reps: reps, weight: weight))
+                print("Insert Successful", response3)
+            }
+            catch {
+                print("You kinda suck", error)
+            }
+        }
+    }
 }
