@@ -31,7 +31,7 @@ struct New_ST_Workout: View {
     @State private var selection1 = "Deadlift"
     @State private var isButtonTapped: Bool = false
     @State private var apiResponse: String = ""
-    @State private var weightMeasurementInput = ""
+    @State private var weightMeasurementInput = "LB"
     @State private var name = "Frank Sinatra"
     @State private var dropSet = false
     @State private var darkMode = false
@@ -45,6 +45,9 @@ struct New_ST_Workout: View {
         let id: Int
         let name: String
     }*/
+    
+    //@State private var muscles = ["Chest","Back"]
+    //@State private var workouts = ["Bench Press", "Deadlift"]
     @State private var muscles:[Muscle] = []
     @State private var workouts:[Workout] = []
     // Creating the connection to supabase
@@ -163,6 +166,7 @@ struct New_ST_Workout: View {
                 .foregroundColor(.accentColor)
                 
                 // Picklist for workouts
+              //  let musclesInput = "Chest"
                 if musclesInput == "Chest" {
                     Text("Which workout?")
                     let chestWorkouts = workouts.filter {workout in workout.muscleid == 1 }
@@ -303,109 +307,9 @@ struct New_ST_Workout: View {
                     .imageScale(.large)
                     .foregroundColor(.accentColor)
                 }
-               /* if musclesInput == "Back" {
-                    Text("Which workout?")
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(backWorkouts, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    
-                    .pickerStyle(.menu)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                } else if musclesInput == "Chest234" {
-                    Text("Which workout?")
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(chestWorkouts, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                    .border(Color.blue,width: 1)
-                } else if musclesInput == "Legs" {
-                    Text("Which workout?")
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(legWorkouts, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                } else if musclesInput == "Triceps" {
-                    Text("Which workout?")
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(tricepWorkouts, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                } else if musclesInput == "Biceps" {
-                    Text("Which workout?")
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(bicepWorkouts, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                }else if musclesInput == "Shoulders" {
-                    Text("Which workout?")
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(shoulderWorkouts, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                }else if musclesInput == "Abs" {
-                    Text("Which workout?")
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(abWorkouts, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                }*/
-                
+
                 //Sets textbox
+               // let workoutsInput = "Bench Press"
                 HStack {
                     Text("Sets")
                         .foregroundColor(.blue) // Customize label color if needed
@@ -473,16 +377,37 @@ struct New_ST_Workout: View {
                 TextField("Email", text: $username)
                 //Submit workout via API call
                 Button("Submit Workout") {
+                    let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput)
                     isButtonTapped = true
-                    /*apiService.postData(name: <#T##String#>, muscles: <#T##String#>, Workout: <#T##String#>, Sets: <#T##Int#>, Reps: <#T##Int#>, Weight: <#T##Double#>)*/
-                    /* apiService.postData(name: name, ExerciseType: typeOfWorkoutSelected, muscles: musclesInput, Workout: workoutsInput, Sets: setsInput, Reps: repsInput, Weight: weightInput, weightMeasurement: weightMeasurementInput, username: username)*/
+                    print("It tapped b")
+                    print(workoutrecord)
+                    /*
+                     
+                     - Figure out how to have the button tap run an async job
+                     - Figure out why I cannot pass workoutrecord to my insert function in DatabaseManager
+                     - See if I'm overdoing the constructor as inserting the varable removed the error. Could be because the variable is assigned in the same class as the insert call
+                     */
                     
-                    
+                    /*
+                     do {
+                     let response3 = try await supabase
+                     .from("workoutRecords")
+                     /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
+                      OR
+                      */.insert(workoutrecord)
+                     .execute()
+                     print("Insert Successful", response3)
+                     }
+                     catch {
+                     print("You kinda suck", error)
+                     }
+                     }*/
                 }
                 .padding()
                 .background(Color.black)
                 .shadow(color: .gray, radius: 3, x: 0, y: 2)
                 .border(Color.blue, width: 2)
+
                 
                 /* if let responseData = apiService.responseData {
                  // Display data from the API response
@@ -491,8 +416,8 @@ struct New_ST_Workout: View {
                 if isButtonTapped{
                     /*let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput)
                     */
-                    let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput,muscle: musclesInput, workout: workoutsInput,sets: setsInput, reps: repsInput, weight: weightInput)
-                    insertWorkoutRecords(workoutrecord)
+                   /* let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput,muscle: musclesInput, workout: workoutsInput,sets: setsInput, reps: repsInput, weight: weightInput)*/
+                    //reply4 = DatabaseManager.insertWorkoutRecords(workoutrecord)
                     /*Text("Muscle: \(musclesInput),Workout: \(workoutsInput), Sets: \(setsInput), Reps: \(repsInput), Weight: \(weightInput)")
                      .font(.title)
                      .padding()

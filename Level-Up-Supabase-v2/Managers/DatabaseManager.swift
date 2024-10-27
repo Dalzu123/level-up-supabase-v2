@@ -60,6 +60,7 @@ class DatabaseManager {
                     .from("workoutRecords")
                     /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
                      */.insert(WorkoutRecord(weightMeasurementType: weightMeasurementType, muscle: muscle, workout: workout, sets: sets, reps: reps, weight: weight))
+                    .execute()
                 print("Insert Successful", response3)
             }
             catch {
