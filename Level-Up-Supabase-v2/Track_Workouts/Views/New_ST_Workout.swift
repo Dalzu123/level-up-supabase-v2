@@ -14,7 +14,7 @@ import Supabase
 
 struct New_ST_Workout: View {
     //@StateObject var apiService = PostWorkoutAPI()
-    @State private var workoutTypeSelection = ""
+    @State private var workoutTypeSelection = "Bench Press"
     @State private var musclesInput: String = "Chest"
     @State private var musclesid: Int = 1
     @State private var workoutsInput: String = ""
@@ -22,8 +22,8 @@ struct New_ST_Workout: View {
     @State private var repsInput1 = ""
     @State private var repsInput2 = ""
     @State private var repsInput3 = ""
-    @State private var setsInput: Int = 0
-    @State private var repsInput: Int = 0
+    @State private var setsInput: Int = 1
+    @State private var repsInput: Int = 1
     @State private var weightInput: Double = 0.0
     @State private var distanceInput: Double = 0.0
     @State private var timeInput = ""
@@ -381,6 +381,9 @@ struct New_ST_Workout: View {
                     isButtonTapped = true
                     print("It tapped b")
                     print(workoutrecord)
+                    
+                            database.insertWorkoutRecords(weightMeasurementType: weightMeasurementInput, muscle: musclesInput,workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput)
+                       
                     /*
                      
                      - Figure out how to have the button tap run an async job
