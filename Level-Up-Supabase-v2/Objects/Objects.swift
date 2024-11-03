@@ -26,4 +26,10 @@ struct WorkoutRecord: Encodable {
     var sets: Int
     var reps: Int
     var weight: Double
+    var username: String
+}
+
+struct feedback: Encodable, Hashable {
+    var Feedback: String
+    var Commenter: String
 }

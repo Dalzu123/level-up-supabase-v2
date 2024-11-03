@@ -17,7 +17,7 @@ struct New_ST_Workout: View {
     @State private var workoutTypeSelection = "Bench Press"
     @State private var musclesInput: String = "Chest"
     @State private var musclesid: Int = 1
-    @State private var workoutsInput: String = ""
+    @State private var workoutsInput: String = "Bench Press"
     @State private var setsInput1 = ""
     @State private var repsInput1 = ""
     @State private var repsInput2 = ""
@@ -31,7 +31,7 @@ struct New_ST_Workout: View {
     @State private var selection1 = "Deadlift"
     @State private var isButtonTapped: Bool = false
     @State private var apiResponse: String = ""
-    @State private var weightMeasurementInput = "LB"
+    @State private var weightMeasurementInput = "Lbs"
     @State private var name = "Frank Sinatra"
     @State private var dropSet = false
     @State private var darkMode = false
@@ -66,87 +66,21 @@ struct New_ST_Workout: View {
     //let sets = ["1","2","3","4","5","6"]
     let sets = Array(1...6)
     let reps = Array(1...20)
-    
-    let backWorkouts = ["Deadlift",
-                        "Chin Up",
-                        "Lat pull down cable",
-                        "Bent over row",
-                        "ISO row wide",
-                        "T bar row","Wide pull up",
-                        "RDL",
-                        "Lat pull down machine",
-                        "In bent over row",
-                        "DB Bench row",
-                        "Face pulls",
-                        "Cable low row",
-                        "Rear delts"]
-    
-    let legWorkouts = ["Squat",
-                       "Lunge",
-                       "Hip raise",
-                       "Calf","Goblet Squat",
-                       "Leg press",
-                       "Leg extension",
-                       "Quad curl",
-                       "Hip abductor out",
-                       "Hip abductor in"]
-    
-    let shoulderWorkouts = ["barbell Shoulder Press",
-                            "Upright BB row",
-                            "Trap shrug",
-                            "Dumbbell lateral raise",
-                            "Dumbbell forward raise", "Twist DB Shoulder press",
-                            "Cable lateral raise",
-                            "Machine Lateral raise",
-                            "Plates raise/DB raise",
-                            "Iso shoulder press"]
-    let bicepWorkouts = ["Bar bicep curl",
-                         "Rope Hammer curl",
-                         "Incline Curl",
-                         "Preacher curls","Dumbbell curl",
-                         "Reverse curl",
-                         "Bicep machine",
-                         "Cable Curl",
-                         "Concentration Curl",
-                         "Drag Curl"]
-    
-    let chestWorkouts = ["Bench",
-                         "Incline bench",
-                         "Decline bench",
-                         "Flyes/rear delt machine","DB bench",
-                         "Incline iso press",
-                         "Decline machine",
-                         "Db Flye",
-                         "Incline DB Flye",
-                         "Cable Crossover"]
-    
-    let tricepWorkouts = ["Dip",
-                          "Close grip bench",
-                          "Seated overhead DB extension",
-                          "Skullcrushers","Dips machine",
-                          "Tricep machine",
-                          "Cable push downs",
-                          "Cable Overhead extension",
-                          "Double DB extension laying down",
-                          "Sideways cable extensión"]
-    
-    let abWorkouts = ["Crunches","Leg raise",
-                      "Russian twist",
-                      "Mountain climber",
-                      "Seated in and outs",
-                      "Deadman hang leg up",
-                      "Crucifix",
-                      "Star crunches",
-                      "Plank",
-                      "Side plank reach through",
-                      "Bicycle"]
-    
-    let weightMeasurement = ["Lbs","Kg"]
+
+    let weightMeasurement = ["Lbs","Kgs"]
     var body: some View {
         //@State private var typeOfWorkoutSelected = ""
         NavigationView {
+            ZStack {
+                Color("AccentColor")
+                    .ignoresSafeArea()
             VStack {
-                
+                Image("LevelUpBanner")
+                     .resizable() // Allows the image to be resized
+                                 .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
+                                 //.frame(width: 800, height: 200) // Sets the frame size of the image
+                                 .clipped()
+                 
                 //Picklist for muscles
                 Text("Which muscle?")
                 Picker("Select Muscle", selection: $musclesInput) {
@@ -163,6 +97,7 @@ struct New_ST_Workout: View {
                         .stroke(Color.blue, lineWidth: 1)
                 )
                 .imageScale(.large)
+                .accentColor(.black)
                 .foregroundColor(.accentColor)
                 
                 // Picklist for workouts
@@ -177,6 +112,7 @@ struct New_ST_Workout: View {
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .accentColor(.black)
                     .onChange(of: workoutsInput) {
                         print("successful change in workouts input")
                     }
@@ -197,6 +133,7 @@ struct New_ST_Workout: View {
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .accentColor(.black)
                     .onChange(of: workoutsInput) {
                         print("successful change in workouts input")
                     }
@@ -217,6 +154,7 @@ struct New_ST_Workout: View {
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .accentColor(.black)
                     .onChange(of: workoutsInput) {
                         print("successful change in workouts input")
                     }
@@ -237,6 +175,7 @@ struct New_ST_Workout: View {
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .accentColor(.black)
                     .onChange(of: workoutsInput) {
                         print("successful change in workouts input")
                     }
@@ -257,6 +196,7 @@ struct New_ST_Workout: View {
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .accentColor(.black)
                     .onChange(of: workoutsInput) {
                         print("successful change in workouts input")
                     }
@@ -277,6 +217,7 @@ struct New_ST_Workout: View {
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .accentColor(.black)
                     .onChange(of: workoutsInput) {
                         print("successful change in workouts input")
                     }
@@ -297,6 +238,7 @@ struct New_ST_Workout: View {
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .accentColor(.black)
                     .onChange(of: workoutsInput) {
                         print("successful change in workouts input")
                     }
@@ -321,6 +263,7 @@ struct New_ST_Workout: View {
                         }
                     }
                     .pickerStyle(.menu)
+                    .accentColor(.black)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.blue, lineWidth: 1)
@@ -340,6 +283,7 @@ struct New_ST_Workout: View {
                         }
                     }
                     .pickerStyle(.menu)
+                    .accentColor(.black)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.blue, lineWidth: 1)
@@ -352,64 +296,69 @@ struct New_ST_Workout: View {
                     Text("Weight")
                         .foregroundColor(.blue) // Customize label color if needed
                         .font(.headline)
-                    TextField("Weight", text: Binding(
-                        get: { "" },
-                        set: {
-                            if let newValue = Double($0) {
-                                weightInput = newValue
-                            }
-                        }
+                    TextField("", text: Binding(
+                        get: { String(weightInput) },
+                        set: { weightInput = Double($0) ?? 0.0
+                                                /*if let newValue = Double($0) {
+                                                    weightInput = newValue
+                                                }*/
+                                            }
                     ))
-                    .padding()
+                    .frame(width: 50)
+                    .padding(3)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 2)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+                   
                     // }
                     //Weight measurement picklist
                     Text("Lbs or KGs?" )
                         .padding(.top,10)
+                        .padding(.leading, 30)
                     Picker("Select Weight Measurement", selection: $weightMeasurementInput) {
                         ForEach(weightMeasurement, id: \.self) {
                             Text($0)
                         }
                     }
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+                    .accentColor(.black)
                     .pickerStyle(.menu)
                     //.padding()
                 }
-                Text("Email (Will become Username)")
-                TextField("Email", text: $username)
+               // .border(Color.black, width:1)
+                    Text("Email (Will become Username)")
+                    TextField("Email", text: $username)
+                        .padding(5)
+                        .foregroundColor(.black)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 1)
+                                .stroke(Color.blue, lineWidth: 1)
+                        )
+
                 //Submit workout via API call
                 Button("Submit Workout") {
-                    let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput)
+                    
+
+                    let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
                     isButtonTapped = true
                     print("It tapped b")
                     print(workoutrecord)
                     
-                            database.insertWorkoutRecords(weightMeasurementType: weightMeasurementInput, muscle: musclesInput,workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput)
+                    database.insertWorkoutRecords(weightMeasurementType: weightMeasurementInput, muscle: musclesInput,workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
                        
-                    /*
-                     
-                     - Figure out how to have the button tap run an async job
-                     - Figure out why I cannot pass workoutrecord to my insert function in DatabaseManager
-                     - See if I'm overdoing the constructor as inserting the varable removed the error. Could be because the variable is assigned in the same class as the insert call
-                     */
                     
-                    /*
-                     do {
-                     let response3 = try await supabase
-                     .from("workoutRecords")
-                     /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
-                      OR
-                      */.insert(workoutrecord)
-                     .execute()
-                     print("Insert Successful", response3)
-                     }
-                     catch {
-                     print("You kinda suck", error)
-                     }
-                     }*/
+
                 }
                 .padding()
                 .background(Color.black)
                 .shadow(color: .gray, radius: 3, x: 0, y: 2)
                 .border(Color.blue, width: 2)
+                
+                
 
                 
                 /* if let responseData = apiService.responseData {
@@ -417,21 +366,64 @@ struct New_ST_Workout: View {
                  }*/
                 
                 if isButtonTapped{
-                    /*let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput)
-                    */
-                   /* let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput,muscle: musclesInput, workout: workoutsInput,sets: setsInput, reps: repsInput, weight: weightInput)*/
-                    //reply4 = DatabaseManager.insertWorkoutRecords(workoutrecord)
-                    /*Text("Muscle: \(musclesInput),Workout: \(workoutsInput), Sets: \(setsInput), Reps: \(repsInput), Weight: \(weightInput)")
-                     .font(.title)
-                     .padding()
-                     */
+
                     if($setsInput.wrappedValue > 0 && $repsInput.wrappedValue > 0 && $weightInput.wrappedValue > 0.0){
                         let results3 = (Double($setsInput.wrappedValue) * Double($repsInput.wrappedValue) * $weightInput.wrappedValue)
                         
                         Text("Weight moved this Workout \(String(format: "%.2f", results3)) \(weightMeasurementInput)")
+                            .padding()
+                        
+                        NavigationLink(destination:Feedback())
+                        {
+                            Text("Thoughts?")
+                        }
+                        .padding(5)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.blue, lineWidth: 1)
+                        ).accentColor(.blue)
+                        .padding(.top, 20)
+                        
+                         
+                        
+                    }
+                    else if($setsInput.wrappedValue > 0 && $repsInput.wrappedValue > 0 && $weightInput.wrappedValue == 0.0){
+                        
+                        Text("Successfully logged your workout")
+                            .padding()
+                        
+                        NavigationLink(destination:Feedback())
+                        {
+                            Text("Thoughts?")
+                        }
+                        .padding(5)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.blue, lineWidth: 1)
+                        ).accentColor(.blue)
+                        .padding(.top, 20)
+                        
+                         
+                        
                     }
                     
                 }
+                else 
+                {
+                    NavigationLink(destination:Feedback())
+                    {
+                        Text("Thoughts?")
+                    }
+                    .padding(5)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.blue, lineWidth: 1)
+                    ).accentColor(.blue)
+                        .padding(.top, 20)
+                }
+                
+                
+
                 
                 
             }.onAppear{
@@ -444,6 +436,7 @@ struct New_ST_Workout: View {
                     print(workouts)
                 }
             }
+            }
             
         }
     }
@@ -452,9 +445,9 @@ struct New_ST_Workout: View {
 }
 
     
-#Preview {
+/*#Preview {
     New_ST_Workout()
-}
+}*/
         
         
         

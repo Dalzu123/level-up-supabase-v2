@@ -20,6 +20,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    New_ST_Workout()
+    Exercise_Prompt()
 }
 

@@ -53,18 +53,34 @@ class DatabaseManager {
         return []
     }
     
-    func insertWorkoutRecords(weightMeasurementType: String, muscle: String, workout: String, sets: Int, reps: Int, weight: Double) {
+    func insertWorkoutRecords(weightMeasurementType: String, muscle: String, workout: String, sets: Int, reps: Int, weight: Double, username: String) {
         Task{
             do {
                 let response3 = try await supabase
                     .from("workoutRecords")
                     /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
-                     */.insert(WorkoutRecord(weightMeasurementType: weightMeasurementType, muscle: muscle, workout: workout, sets: sets, reps: reps, weight: weight))
+                     */.insert(WorkoutRecord(weightMeasurementType: weightMeasurementType, muscle: muscle, workout: workout, sets: sets, reps: reps, weight: weight, username: username))
                     .execute()
                 print("Insert Successful", response3)
             }
             catch {
                 print("You kinda suck", error)
+            }
+        }
+    }
+    
+    func insertFeedback(Feedback: String, Commenter: String) {
+        Task{
+            do {
+                let response4 = try await supabase
+                    .from("feedback")
+                    /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
+                     */.insert(feedback(Feedback: Feedback, Commenter: Commenter))
+                    .execute()
+                print("Insert Successful", response4)
+            }
+            catch {
+                print("You kinda suck at this shit", error)
             }
         }
     }
