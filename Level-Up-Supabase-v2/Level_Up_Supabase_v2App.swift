@@ -11,7 +11,8 @@ import SwiftUI
 struct Level_Up_Supabase_v2App: App {
     var body: some Scene {
         WindowGroup {
-            Exercise_Prompt()
+            
+    ProfileView()
         }
     }
 }

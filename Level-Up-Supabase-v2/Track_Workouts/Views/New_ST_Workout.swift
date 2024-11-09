@@ -14,7 +14,7 @@ import Supabase
 
 struct New_ST_Workout: View {
     //@StateObject var apiService = PostWorkoutAPI()
-    @State private var workoutTypeSelection = "Bench Press"
+    //@State private var workoutTypeSelection = "Bench Press"
     @State private var musclesInput: String = "Chest"
     @State private var musclesid: Int = 1
     @State private var workoutsInput: String = "Bench Press"
