@@ -6,13 +6,36 @@
 //
 
 import SwiftUI
+import Foundation
 
 @main
 struct Level_Up_Supabase_v2App: App {
+    init() {
+        UITabBar.appearance().backgroundColor = UIColor.systemGray6
+    }
     var body: some Scene {
+
         WindowGroup {
-            
-    ProfileView()
+            TabView {
+                ProfileView().tabItem {
+                    Label("Profile", systemImage: "person")
+                }
+                New_ST_Workout()
+                    .tabItem {
+                        Label("Track Workout", systemImage: "plus")
+                }
+                
+                View_Workout_History()
+                    .tabItem {
+                    Label("View Progress", systemImage: "eye.fill")
+                }
+                Level_Up_Supplements()
+                    .tabItem {
+                        Label("Vitamins", systemImage: "pills")
+                    }
+            }
+            //ProfileView()
         }
     }
+
 }

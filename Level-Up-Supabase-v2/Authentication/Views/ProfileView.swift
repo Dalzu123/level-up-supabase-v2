@@ -12,20 +12,39 @@ struct ProfileView:View {
 
     
     var body: some View {
-        Image("LevelUpBanner")
-             .resizable() // Allows the image to be resized
-                         .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
-                         //.frame(width: 800, height: 200) // Sets the frame size of the image
-                         .clipped()
-                         .padding(.top, 80)
+
+
+        
+        /* Image("LevelUpBanner")
+         .resizable() // Allows the image to be resized
+         .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
+         //.frame(width: 800, height: 200) // Sets the frame size of the image
+         .clipped()
+         .padding(.top, 80)*/
         
         NavigationView{
-
+            /* Image("LevelUpBanner")
+             .resizable() // Allows the image to be resized
+             .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
+             //.frame(width: 800, height: 200) // Sets the frame size of the image
+             //.clipped()
+             //.padding(.top, 80)*/
             VStack {
-                Text("What are we doing today?")
+                
+                Image("ProgressLogo1")
+                    .resizable() // Allows the image to be resized
+                    .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
+                    .frame(width: 400, height: 200) // Sets the frame size of the image
+                    .clipped()
+                Text("Notes: I will add an authentication page to connect your Apple Account to the app. This is a prototype but don't be shy about tearing it up on what's missing! Be the idea that makes this app gets better")
+                     .padding()
+               /* Text("Notes: I will add an authentication page, a 'Cardio' type of workout, and a profile page that after login will let you select between tracking a workout and viewing your progress of workouts over time. This is a prototype but don't be shy about tearing it up on what's missing! Be the idea that makes this app gets better")
+                    .padding()
+                */
+              /*  Text("What are we doing today?")
                     .bold()
                     .padding()
-                NavigationLink(destination: Exercise_Prompt()) {
+                NavigationLink(destination: New_ST_Workout()) {
                     Text("Track Workouts")
                     
                 }
@@ -41,9 +60,9 @@ struct ProfileView:View {
                 .padding()
                 .background(Color.blue)
                 .foregroundColor(.white)
-                .cornerRadius(10)
+                .cornerRadius(10)*/
             }
-             
+            
         }
         
     }

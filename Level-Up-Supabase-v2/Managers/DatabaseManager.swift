@@ -40,6 +40,20 @@ class DatabaseManager {
         return []
     }
     
+    func fetchWorkoutHistory(muscleID: Int, workoutID: Int, beginDate: Date, endDate: Date) async  -> [WorkoutHistory]   {
+        do{
+            let workoutHistory: [WorkoutHistory] = try await supabase.from("workoutRecords").select().execute().value
+            return workoutHistory
+        }
+        // catch {print("You suck")}
+        catch {print(error)}
+        
+        /*let response = try await supabase.from("muscle").select()
+         print(response)
+         */
+        return []
+    }
+    
     func fetchWorkouts() async  -> [Any]   {
         do{
             let workouts: [Workout] = try await supabase.from("workout").select().execute().value

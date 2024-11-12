@@ -19,6 +19,17 @@ struct Workout: Decodable, Hashable {
     var muscleid: Int
 }
 
+struct WorkoutHistory: Decodable, Hashable {
+    var weightMeasurementType: String
+    var muscle: String
+    var workout: String
+    var sets: Int
+    var reps: Int
+    var weight: Double
+    var username: String
+    var createdDate: Date
+}
+
 struct WorkoutRecord: Encodable {
     var weightMeasurementType: String
     var muscle: String

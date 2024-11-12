@@ -37,8 +37,21 @@ struct New_ST_Workout: View {
     @State private var darkMode = false
     @State private var cardioTypeSelected = ""
     //@State private var cardioTime = ""
+    @State private var typeOfWorkout = ["--Select--","Strengh Training","Cardio"]
     @State private var typeOfWorkoutSelected = ""
     @State private var username = ""
+    @State private var cardioWorkoutsSelection = ""
+    let cardioWorkout = ["Run", "Walk", "Ride","Swim", "Stair Stepper"]
+    @State private var cardioTime = Date()
+    @State private var currentDate: Date?
+    @State var hours: Int = 0
+    @State var minutes: Int = 0
+    @State var seconds: Int = 0
+    @State var miles: Int = 0
+    @State var milesDecimal: Double = 0.0
+    @State var milesDecimalCount = [".1", ".2", ".3", ".4", ".5", ".6", ".7", ".8",".9"]
+    @State var distanceMeasurement = ""
+    @State var distanceType = ["mi", "km"]
     //@State private var workouts = []
     private var database = DatabaseManager()
     /*struct Muscle: Decodable, Hashable {
@@ -57,9 +70,6 @@ struct New_ST_Workout: View {
     
     
     
-    let typeOfWorkout = ["--Select--","Traditional", "Super Set", "Drop Set"]
-    
-    
 
 
     
@@ -74,342 +84,400 @@ struct New_ST_Workout: View {
             ZStack {
                 Color("AccentColor")
                     .ignoresSafeArea()
-            VStack {
-                Image("LevelUpBanner")
-                     .resizable() // Allows the image to be resized
-                                 .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
-                                 //.frame(width: 800, height: 200) // Sets the frame size of the image
-                                 .clipped()
-                 
-                //Picklist for muscles
-                Text("Which muscle?")
-                Picker("Select Muscle", selection: $musclesInput) {
-                                   // ForEach(muscles, id: \.self) { item in Text(item.name)
-                                    ForEach(muscles, id: \.self) { item in Text(item.name).tag(item.name)
-                                    }
-                                }
-                .pickerStyle(MenuPickerStyle())
-                .onChange(of: musclesInput) {
-                    print("successful change in muscle input")
-                }
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.blue, lineWidth: 1)
-                )
-                .imageScale(.large)
-                .accentColor(.black)
-                .foregroundColor(.accentColor)
-                
-                // Picklist for workouts
-              //  let musclesInput = "Chest"
-                if musclesInput == "Chest" {
-                    Text("Which workout?")
-                    let chestWorkouts = workouts.filter {workout in workout.muscleid == 1 }
-                    //print(chestWorkouts)
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(chestWorkouts, id: \.self) {
-                            item in Text(item.name).tag(item.name)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .accentColor(.black)
-                    .onChange(of: workoutsInput) {
-                        print("successful change in workouts input")
-                    }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                }
-                else if musclesInput == "Back" {
-                    Text("Which workout?")
-                    let backWorkouts = workouts.filter {workout in workout.muscleid == 2 }
-                    //print(chestWorkouts)
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(backWorkouts, id: \.self) {
-                            item in Text(item.name).tag(item.name)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .accentColor(.black)
-                    .onChange(of: workoutsInput) {
-                        print("successful change in workouts input")
-                    }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                }
-                else if musclesInput == "Legs" {
-                    Text("Which workout?")
-                    let legsWorkouts = workouts.filter {workout in workout.muscleid == 3 }
-                    //print(chestWorkouts)
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(legsWorkouts, id: \.self) {
-                            item in Text(item.name).tag(item.name)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .accentColor(.black)
-                    .onChange(of: workoutsInput) {
-                        print("successful change in workouts input")
-                    }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                }
-                else if musclesInput == "Shoulders" {
-                    Text("Which workout?")
-                    let shouldersWorkouts = workouts.filter {workout in workout.muscleid == 4 }
-                    //print(chestWorkouts)
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(shouldersWorkouts, id: \.self) {
-                            item in Text(item.name).tag(item.name)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .accentColor(.black)
-                    .onChange(of: workoutsInput) {
-                        print("successful change in workouts input")
-                    }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                }
-                else if musclesInput == "Triceps" {
-                    Text("Which workout?")
-                    let tricepsWorkouts = workouts.filter {workout in workout.muscleid == 5 }
-                    //print(chestWorkouts)
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(tricepsWorkouts, id: \.self) {
-                            item in Text(item.name).tag(item.name)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .accentColor(.black)
-                    .onChange(of: workoutsInput) {
-                        print("successful change in workouts input")
-                    }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                }
-                else if musclesInput == "Biceps" {
-                    Text("Which workout?")
-                    let bicepsWorkouts = workouts.filter {workout in workout.muscleid == 6 }
-                    //print(chestWorkouts)
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(bicepsWorkouts, id: \.self) {
-                            item in Text(item.name).tag(item.name)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .accentColor(.black)
-                    .onChange(of: workoutsInput) {
-                        print("successful change in workouts input")
-                    }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                }
-                else if musclesInput == "Abs" {
-                    Text("Which workout?")
-                    let absWorkouts = workouts.filter {workout in workout.muscleid == 7 }
-                    //print(chestWorkouts)
-                    Picker("Select Workout", selection: $workoutsInput) {
-                        ForEach(absWorkouts, id: \.self) {
-                            item in Text(item.name).tag(item.name)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .accentColor(.black)
-                    .onChange(of: workoutsInput) {
-                        print("successful change in workouts input")
-                    }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                }
-
-                //Sets textbox
-               // let workoutsInput = "Bench Press"
-                HStack {
-                    Text("Sets")
-                        .foregroundColor(.blue) // Customize label color if needed
-                        .font(.headline)
-                    Picker("", selection: $setsInput) {
-                        ForEach(sets, id: \.self) {
-                            sets in
-                            Text("\(sets)")
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .accentColor(.black)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .padding()
-                    // } ( Removing the end of the HStack )
-                    
-                    //Reps textbox
-                    //HStack { ( Removing the beginning of this HStack )
-                    Text("Reps")
-                        .foregroundColor(.blue) // Customize label color if needed
-                        .font(.headline)
-                    Picker("", selection: $repsInput) {
-                        ForEach(reps, id: \.self) {
-                            reps in
-                            Text("\(reps)")
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .accentColor(.black)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .padding()
-                }
-                
-                //Weight checkbox
-                HStack {
-                    Text("Weight")
-                        .foregroundColor(.blue) // Customize label color if needed
-                        .font(.headline)
-                    TextField("", text: Binding(
-                        get: { String(weightInput) },
-                        set: { weightInput = Double($0) ?? 0.0
-                                                /*if let newValue = Double($0) {
-                                                    weightInput = newValue
-                                                }*/
-                                            }
-                    ))
-                    .frame(width: 50)
-                    .padding(3)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 2)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                   
-                    // }
-                    //Weight measurement picklist
-                    Text("Lbs or KGs?" )
-                        .padding(.top,10)
-                        .padding(.leading, 30)
-                    Picker("Select Weight Measurement", selection: $weightMeasurementInput) {
-                        ForEach(weightMeasurement, id: \.self) {
+                VStack {
+                    Image("LevelUpBanner")
+                        .resizable() // Allows the image to be resized
+                        .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
+                    //.frame(width: 800, height: 200) // Sets the frame size of the image
+                        .clipped()
+                        .padding()
+                    //Picklist for type of Workout?
+                    Text("What kind of workout?")
+                    Picker("", selection: $typeOfWorkoutSelected) {
+                        ForEach(typeOfWorkout, id: \.self) {
                             Text($0)
                         }
                     }
+                    .pickerStyle(MenuPickerStyle())
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
+                            .stroke(Color.black, lineWidth: 1)
                     )
+                    .imageScale(.large)
                     .accentColor(.black)
-                    .pickerStyle(.menu)
-                    //.padding()
-                }
-               // .border(Color.black, width:1)
-                    Text("Email (Will become Username)")
-                    TextField("Email", text: $username)
-                        .padding(5)
-                        .foregroundColor(.black)
+                    .foregroundColor(.accentColor)
+                    //Picklist for muscles
+                    if (typeOfWorkoutSelected == "Strengh Training") {
+                        Divider()
+                        Text("Which muscle?")
+                        Picker("Select Muscle", selection: $musclesInput) {
+                            // ForEach(muscles, id: \.self) { item in Text(item.name)
+                            ForEach(muscles, id: \.self) { item in Text(item.name).tag(item.name)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                        .onChange(of: musclesInput) {
+                            print("successful change in muscle input")
+                        }
                         .overlay(
-                            RoundedRectangle(cornerRadius: 1)
+                            RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.blue, lineWidth: 1)
                         )
-
-                //Submit workout via API call
-                Button("Submit Workout") {
+                        .imageScale(.large)
+                        .accentColor(.black)
+                        .foregroundColor(.accentColor)
+                        
+                        // Picklist for workouts
+                        //  let musclesInput = "Chest"
+                        if musclesInput == "Chest" {
+                            Text("Which workout?")
+                            let chestWorkouts = workouts.filter {workout in workout.muscleid == 1 }
+                            //print(chestWorkouts)
+                            Picker("Select Workout", selection: $workoutsInput) {
+                                ForEach(chestWorkouts, id: \.self) {
+                                    item in Text(item.name).tag(item.name)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .accentColor(.black)
+                            .onChange(of: workoutsInput) {
+                                print("successful change in workouts input")
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
+                        }
+                        else if musclesInput == "Back" {
+                            Text("Which workout?")
+                            let backWorkouts = workouts.filter {workout in workout.muscleid == 2 }
+                            //print(chestWorkouts)
+                            Picker("Select Workout", selection: $workoutsInput) {
+                                ForEach(backWorkouts, id: \.self) {
+                                    item in Text(item.name).tag(item.name)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .accentColor(.black)
+                            .onChange(of: workoutsInput) {
+                                print("successful change in workouts input")
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
+                        }
+                        else if musclesInput == "Legs" {
+                            Text("Which workout?")
+                            let legsWorkouts = workouts.filter {workout in workout.muscleid == 3 }
+                            //print(chestWorkouts)
+                            Picker("Select Workout", selection: $workoutsInput) {
+                                ForEach(legsWorkouts, id: \.self) {
+                                    item in Text(item.name).tag(item.name)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .accentColor(.black)
+                            .onChange(of: workoutsInput) {
+                                print("successful change in workouts input")
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
+                        }
+                        else if musclesInput == "Shoulders" {
+                            Text("Which workout?")
+                            let shouldersWorkouts = workouts.filter {workout in workout.muscleid == 4 }
+                            //print(chestWorkouts)
+                            Picker("Select Workout", selection: $workoutsInput) {
+                                ForEach(shouldersWorkouts, id: \.self) {
+                                    item in Text(item.name).tag(item.name)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .accentColor(.black)
+                            .onChange(of: workoutsInput) {
+                                print("successful change in workouts input")
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
+                        }
+                        else if musclesInput == "Triceps" {
+                            Text("Which workout?")
+                            let tricepsWorkouts = workouts.filter {workout in workout.muscleid == 5 }
+                            //print(chestWorkouts)
+                            Picker("Select Workout", selection: $workoutsInput) {
+                                ForEach(tricepsWorkouts, id: \.self) {
+                                    item in Text(item.name).tag(item.name)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .accentColor(.black)
+                            .onChange(of: workoutsInput) {
+                                print("successful change in workouts input")
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
+                        }
+                        else if musclesInput == "Biceps" {
+                            Text("Which workout?")
+                            let bicepsWorkouts = workouts.filter {workout in workout.muscleid == 6 }
+                            //print(chestWorkouts)
+                            Picker("Select Workout", selection: $workoutsInput) {
+                                ForEach(bicepsWorkouts, id: \.self) {
+                                    item in Text(item.name).tag(item.name)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .accentColor(.black)
+                            .onChange(of: workoutsInput) {
+                                print("successful change in workouts input")
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
+                        }
+                        else if musclesInput == "Abs" {
+                            Text("Which workout?")
+                            let absWorkouts = workouts.filter {workout in workout.muscleid == 7 }
+                            //print(chestWorkouts)
+                            Picker("Select Workout", selection: $workoutsInput) {
+                                ForEach(absWorkouts, id: \.self) {
+                                    item in Text(item.name).tag(item.name)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .accentColor(.black)
+                            .onChange(of: workoutsInput) {
+                                print("successful change in workouts input")
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
+                        }
+                        
+                        //Sets textbox
+                        // let workoutsInput = "Bench Press"
+                        HStack {
+                            Text("Sets")
+                                .foregroundColor(.blue) // Customize label color if needed
+                                .font(.headline)
+                            Picker("", selection: $setsInput) {
+                                ForEach(sets, id: \.self) {
+                                    sets in
+                                    Text("\(sets)")
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            .accentColor(.black)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            .padding()
+                            // } ( Removing the end of the HStack )
+                            
+                            //Reps textbox
+                            //HStack { ( Removing the beginning of this HStack )
+                            Text("Reps")
+                                .foregroundColor(.blue) // Customize label color if needed
+                                .font(.headline)
+                            Picker("", selection: $repsInput) {
+                                ForEach(reps, id: \.self) {
+                                    reps in
+                                    Text("\(reps)")
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            .accentColor(.black)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            .padding()
+                        }
+                        
+                        //Weight checkbox
+                        HStack {
+                            Text("Weight")
+                                .foregroundColor(.blue) // Customize label color if needed
+                                .font(.headline)
+                            TextField("", text: Binding(
+                                get: { String(weightInput) },
+                                set: { weightInput = Double($0) ?? 0.0
+                                    /*if let newValue = Double($0) {
+                                     weightInput = newValue
+                                     }*/
+                                }
+                            ))
+                            .frame(width: 50)
+                            .padding(3)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 2)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            
+                            // }
+                            //Weight measurement picklist
+                            Text("Lbs or KGs?" )
+                                .padding(.top,10)
+                                .padding(.leading, 30)
+                            Picker("Select Weight Measurement", selection: $weightMeasurementInput) {
+                                ForEach(weightMeasurement, id: \.self) {
+                                    Text($0)
+                                }
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                            .accentColor(.black)
+                            .pickerStyle(.menu)
+                            //.padding()
+                        }
+                    }
+                    else if(typeOfWorkoutSelected == "Cardio") {
+                        Divider()
+                        Text("Workout:")
+                            .bold()
+                        Picker("Select Exercise", selection: $cardioWorkoutsSelection)
+                        {
+                            ForEach(cardioWorkout, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.blue, lineWidth: 1)
+                        )
+                        .imageScale(.large)
+                        .accentColor(.black)
+                        .foregroundColor(.accentColor)
+                        VStack {
+                            VStack {
+                            Text("Distance:")
+                                .bold()
+                            
+                                HStack {
+                                    Picker("", selection: $miles){
+                                        ForEach(0..<27, id: \.self) { i in
+                                            Text("\(i)")
+                                        }
+                                    }.pickerStyle(WheelPickerStyle())
+                                    Picker("", selection: $milesDecimal){
+                                        ForEach(milesDecimalCount, id: \.self) { i in
+                                            Text("\(i)")
+                                        }
+                                    }.pickerStyle(WheelPickerStyle())
+                                    Picker("", selection: $distanceMeasurement){
+                                        ForEach(distanceType, id: \.self) {
+                                            Text($0)
+                                        }
+                                    }.pickerStyle(WheelPickerStyle())
+                                }
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 0)
+                                    .stroke(Color.black, lineWidth: 1)
+                                )//.padding(.horizontal)
+                            VStack {
+                                Text("Time:")
+                                    .bold()
+                                HStack {
+                                    Picker("", selection: $hours){
+                                        ForEach(0..<27, id: \.self) { i in
+                                            Text("\(i) hours").tag(i)
+                                        }
+                                    }.pickerStyle(WheelPickerStyle())
+                                    Picker("", selection: $minutes){
+                                        ForEach(0..<60, id: \.self) { i in
+                                            Text("\(i) min").tag(i)
+                                        }
+                                    }.pickerStyle(WheelPickerStyle())
+                                    Picker("", selection: $seconds){
+                                        ForEach(0..<60, id: \.self) { i in
+                                            Text("\(i) seconds").tag(i)
+                                        }
+                                    }.pickerStyle(WheelPickerStyle())
+                                }
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 0)
+                                    .stroke(Color.black, lineWidth: 1)
+                            )//.padding(.horizontal)
+                        }
+                    }
                     
-
-                    let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
-                    isButtonTapped = true
-                    print("It tapped b")
-                    print(workoutrecord)
-                    
-                    database.insertWorkoutRecords(weightMeasurementType: weightMeasurementInput, muscle: musclesInput,workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
-                       
-                    
-
-                }
-                .padding()
-                .background(Color.black)
-                .shadow(color: .gray, radius: 3, x: 0, y: 2)
-                .border(Color.blue, width: 2)
-                
-                
-
+                    if(typeOfWorkoutSelected == "--Select--" || typeOfWorkoutSelected == "") {
+                        
+                    }
+                    else{
+                        // .border(Color.black, width:1)
+                       // Text("Email (Will become Username)")
+                        TextField("Email (Will become Username)", text: $username)
+                            .padding(5)
+                            .foregroundColor(.black)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 0)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                        
+                        //Submit workout via API call
+                        Button("Submit Workout") {
+                            
+                            if(typeOfWorkoutSelected == "Strength Training"){
+                                
+                                let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
+                                isButtonTapped = true
+                                print("It tapped b")
+                                print(workoutrecord)
+                                
+                                database.insertWorkoutRecords(weightMeasurementType: weightMeasurementInput, muscle: musclesInput,workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
+                                
+                            }
+                            else if (typeOfWorkoutSelected == "Cardio") {
+                                
+                            }
+                            
+                        }
+                        .padding()
+                        .background(Color.black)
+                        .shadow(color: .gray, radius: 3, x: 0, y: 2)
+                        .border(Color.blue, width: 2)
+                        
+                        
+                    }
                 
                 /* if let responseData = apiService.responseData {
                  // Display data from the API response
                  }*/
                 
                 if isButtonTapped{
-
-                    if($setsInput.wrappedValue > 0 && $repsInput.wrappedValue > 0 && $weightInput.wrappedValue > 0.0){
-                        let results3 = (Double($setsInput.wrappedValue) * Double($repsInput.wrappedValue) * $weightInput.wrappedValue)
-                        
-                        Text("Weight moved this Workout \(String(format: "%.2f", results3)) \(weightMeasurementInput)")
-                            .padding()
-                        
-                        NavigationLink(destination:Feedback())
-                        {
-                            Text("Thoughts?")
-                        }
-                        .padding(5)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.blue, lineWidth: 1)
-                        ).accentColor(.blue)
-                        .padding(.top, 20)
-                        
-                         
-                        
-                    }
-                    else if($setsInput.wrappedValue > 0 && $repsInput.wrappedValue > 0 && $weightInput.wrappedValue == 0.0){
-                        
-                        Text("Successfully logged your workout")
-                            .padding()
-                        
-                        NavigationLink(destination:Feedback())
-                        {
-                            Text("Thoughts?")
-                        }
-                        .padding(5)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.blue, lineWidth: 1)
-                        ).accentColor(.blue)
-                        .padding(.top, 20)
-                        
-                         
-                        
-                    }
-                    
+                   Text("Successfully logged your workout")
                 }
-                else 
-                {
+
                     NavigationLink(destination:Feedback())
                     {
                         Text("Thoughts?")
@@ -420,7 +488,7 @@ struct New_ST_Workout: View {
                             .stroke(Color.blue, lineWidth: 1)
                     ).accentColor(.blue)
                         .padding(.top, 20)
-                }
+                
                 
                 
 
@@ -439,7 +507,7 @@ struct New_ST_Workout: View {
             }
             
         }
-    }
+}
     
 
 }

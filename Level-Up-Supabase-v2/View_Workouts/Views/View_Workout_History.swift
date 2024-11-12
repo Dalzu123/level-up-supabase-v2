@@ -16,8 +16,8 @@ struct View_Workout_History: View {
     private var database = DatabaseManager()
     @State private var muscles:[Muscle] = []
     @State private var workouts:[Workout] = []
-    @State private var beginDate = Date()
-    @State private var endDate = Date()
+    @State private var beginDate = Date.now
+    @State private var endDate = Date.now
 
     
     
@@ -212,12 +212,24 @@ struct View_Workout_History: View {
 
  //           }
             Button("Get Workout History") {
-                
+                print(beginDate)
             }
             .padding()
             .background(Color.black)
             .shadow(color: .gray, radius: 3, x: 0, y: 2)
             .border(Color.blue, width: 2)
+            
+            
+            NavigationLink(destination:Feedback())
+            {
+                Text("Thoughts?")
+            }
+            .padding(5)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.blue, lineWidth: 1)
+            ).accentColor(.blue)
+                .padding(.top, 20)
             
             
         }
@@ -230,6 +242,7 @@ struct View_Workout_History: View {
                 print(muscles)
                 print(workouts)
             }
+
         }
     }
     
