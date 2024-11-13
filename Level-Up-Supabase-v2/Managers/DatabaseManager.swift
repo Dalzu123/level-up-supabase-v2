@@ -40,7 +40,7 @@ class DatabaseManager {
         return []
     }
     
-    func fetchWorkoutHistory(muscleID: Int, workoutID: Int, beginDate: Date, endDate: Date) async  -> [WorkoutHistory]   {
+    func fetchWorkoutHistory(muscleID: Int, workoutID: Int, username: String, beginDate: Date, endDate: Date) async  -> [WorkoutHistory]   {
         do{
             let workoutHistory: [WorkoutHistory] = try await supabase.from("workoutRecords").select().execute().value
             return workoutHistory
@@ -52,6 +52,72 @@ class DatabaseManager {
          print(response)
          */
         return []
+        
+        /*
+         // The query to look at total weight moved by muscle on a daily basis
+         
+         SELECT
+
+
+           muscle,
+           sum(sets * reps * weight) AS Total_Weight,
+           username,
+           DATE_TRUNC(
+         'day'
+         , created_at)
+         AS
+          created_a
+         FROM
+
+           "workoutRecords"
+           where
+
+           muscle = muscleId
+           and username = username
+         GROUP
+          
+         BY
+
+           DATE_TRUNC(
+         'day'
+         , created_at),
+           muscle,
+           username;
+
+         
+         
+         // The query to look at total weight moved by workout on a daily basis
+         
+         SELECT
+
+           workout,
+           muscle,
+           sum(sets * reps * weight) AS Total_Weight,
+           username,
+           DATE_TRUNC(
+         'day'
+         , created_at)
+         AS
+          created_a
+         FROM
+
+           "workoutRecords"
+           where
+          workout = workoutId
+          and
+           muscle = muscleId
+           and username = username
+         GROUP
+          
+         BY
+
+           DATE_TRUNC(
+         'day'
+         , created_at),
+          workout,
+           muscle,
+           username;
+         */
     }
     
     func fetchWorkouts() async  -> [Any]   {
