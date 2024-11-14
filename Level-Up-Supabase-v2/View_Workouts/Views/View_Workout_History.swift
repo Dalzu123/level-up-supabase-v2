@@ -18,6 +18,9 @@ struct View_Workout_History: View {
     @State private var workouts:[Workout] = []
     @State private var beginDate = Date.now
     @State private var endDate = Date.now
+    @State private var username = ""
+    @State private var workoutHistory = []
+    
 
     
     
@@ -198,6 +201,13 @@ struct View_Workout_History: View {
             
   //          HStack {
             VStack{
+                TextField("username",text: $username)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 0)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+           /*
+            // From and To dates for history
             Text("From:")
                     DatePicker("", selection: $beginDate, displayedComponents: .date)
                 .labelsHidden()
@@ -208,16 +218,22 @@ struct View_Workout_History: View {
                     .labelsHidden()
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.bottom, 5)
-            }
+            */}
 
  //           }
             Button("Get Workout History") {
-                print(beginDate)
-            }
+                Task{
+                       
+                         await    workoutHistory = database.fetchWorkoutHistory(muscle: musclesSelection, workout: workoutsSelection, username: username, beginDate: beginDate, endDate: endDate)
+                    print(workoutHistory)
+
+                    }
+                }
             .padding()
             .background(Color.black)
             .shadow(color: .gray, radius: 3, x: 0, y: 2)
             .border(Color.blue, width: 2)
+            
             
             
             NavigationLink(destination:Feedback())

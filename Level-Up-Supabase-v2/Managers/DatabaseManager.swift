@@ -40,9 +40,17 @@ class DatabaseManager {
         return []
     }
     
-    func fetchWorkoutHistory(muscleID: Int, workoutID: Int, username: String, beginDate: Date, endDate: Date) async  -> [WorkoutHistory]   {
+    func fetchWorkoutHistory(muscle: String, workout: String, username: String, beginDate: Date, endDate: Date) async  -> [WorkoutHistory]   {
         do{
-            let workoutHistory: [WorkoutHistory] = try await supabase.from("workoutRecords").select().execute().value
+            let workoutHistory: [WorkoutHistory] = try await supabase.from("workoutRecords")
+                .select("workout, sets, reps, muscle, weight, weightMeasurementType, username, created_at")
+                //.group("DATE_TRUNC('day', created_at), workout, muscle, username")
+                .eq("muscle", value: muscle)
+                .eq("workout", value: workout)
+                .eq("username", value: username)
+                .order("created_at", ascending: false)
+                .execute()
+                .value
             return workoutHistory
         }
         // catch {print("You suck")}
@@ -54,35 +62,6 @@ class DatabaseManager {
         return []
         
         /*
-         // The query to look at total weight moved by muscle on a daily basis
-         
-         SELECT
-
-
-           muscle,
-           sum(sets * reps * weight) AS Total_Weight,
-           username,
-           DATE_TRUNC(
-         'day'
-         , created_at)
-         AS
-          created_a
-         FROM
-
-           "workoutRecords"
-           where
-
-           muscle = muscleId
-           and username = username
-         GROUP
-          
-         BY
-
-           DATE_TRUNC(
-         'day'
-         , created_at),
-           muscle,
-           username;
 
          
          
@@ -117,6 +96,38 @@ class DatabaseManager {
           workout,
            muscle,
            username;
+         
+         
+         // The query to look at total weight moved by muscle on a daily basis
+         
+         SELECT
+
+
+           muscle,
+           sum(sets * reps * weight) AS Total_Weight,
+           username,
+           DATE_TRUNC(
+         'day'
+         , created_at)
+         AS
+          created_a
+         FROM
+
+           "workoutRecords"
+           where
+
+           muscle = muscleId
+           and username = username
+         GROUP
+          
+         BY
+
+           DATE_TRUNC(
+         'day'
+         , created_at),
+           muscle,
+           username;
+
          */
     }
     

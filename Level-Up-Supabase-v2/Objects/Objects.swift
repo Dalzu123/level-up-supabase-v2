@@ -27,7 +27,7 @@ struct WorkoutHistory: Decodable, Hashable {
     var reps: Int
     var weight: Double
     var username: String
-    var createdDate: Date
+    var created_at: Date
 }
 
 struct WorkoutRecord: Encodable {
