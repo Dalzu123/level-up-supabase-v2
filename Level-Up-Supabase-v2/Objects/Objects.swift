@@ -19,7 +19,8 @@ struct Workout: Decodable, Hashable {
     var muscleid: Int
 }
 
-struct WorkoutHistory: Decodable, Hashable {
+struct WorkoutHistory: Identifiable, Decodable, Hashable {
+    var id: Int
     var weightMeasurementType: String
     var muscle: String
     var workout: String

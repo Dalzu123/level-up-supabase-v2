@@ -19,7 +19,8 @@ struct View_Workout_History: View {
     @State private var beginDate = Date.now
     @State private var endDate = Date.now
     @State private var username = ""
-    @State private var workoutHistory = []
+    @State private var workoutHistory:[WorkoutHistory] = []
+    @State private var showTable = false
     
 
     
@@ -224,8 +225,9 @@ struct View_Workout_History: View {
             Button("Get Workout History") {
                 Task{
                        
-                         await    workoutHistory = database.fetchWorkoutHistory(muscle: musclesSelection, workout: workoutsSelection, username: username, beginDate: beginDate, endDate: endDate)
+                         await    workoutHistory = database.fetchWorkoutHistory(muscle: musclesSelection, workout: workoutsSelection, username: username/*, beginDate: beginDate, endDate: endDate*/)
                     print(workoutHistory)
+                    showTable = true
 
                     }
                 }
@@ -233,6 +235,31 @@ struct View_Workout_History: View {
             .background(Color.black)
             .shadow(color: .gray, radius: 3, x: 0, y: 2)
             .border(Color.blue, width: 2)
+            if (showTable == true) {
+                List {
+                    HStack {
+                        Text("Workout").bold().frame(maxWidth: .infinity, alignment: .leading)
+                        Text("Sets").bold().frame(maxWidth: .infinity, alignment: .leading)
+                        Text("Reps").bold().frame(maxWidth: .infinity, alignment: .leading)
+                        Text("Weight").bold().frame(maxWidth: .infinity, alignment: .leading)
+                        Text("Date").bold().frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding()
+                    
+                    ForEach($workoutHistory) { row in
+                        HStack {
+                            Text("\(row.workout.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
+                            Text(String(row.sets.wrappedValue)).frame(maxWidth: .infinity, alignment: .leading)
+                            Text("\(row.reps.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
+                            Text("\(row.weight.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
+                            Text("\(row.created_at.wrappedValue.formatted(.dateTime.year().month().day()))").frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .padding()
+                    }
+                    
+                }
+            }
+
             
             
             

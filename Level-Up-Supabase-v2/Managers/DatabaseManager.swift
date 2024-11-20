@@ -40,11 +40,11 @@ class DatabaseManager {
         return []
     }
     
-    func fetchWorkoutHistory(muscle: String, workout: String, username: String, beginDate: Date, endDate: Date) async  -> [WorkoutHistory]   {
+    func fetchWorkoutHistory(muscle: String, workout: String, username: String/*, beginDate: Date, endDate: Date*/) async  -> [WorkoutHistory]   {
         do{
             let workoutHistory: [WorkoutHistory] = try await supabase.from("workoutRecords")
-                .select("workout, sets, reps, muscle, weight, weightMeasurementType, username, created_at")
-                //.group("DATE_TRUNC('day', created_at), workout, muscle, username")
+                .select("id,workout, sets, reps, muscle, weight, weightMeasurementType, username, created_at")
+            //.group("DATE_TRUNC('day', created_at), workout, muscle, username")
                 .eq("muscle", value: muscle)
                 .eq("workout", value: workout)
                 .eq("username", value: username)
@@ -60,6 +60,7 @@ class DatabaseManager {
          print(response)
          */
         return []
+    }
         
         /*
 
@@ -129,7 +130,7 @@ class DatabaseManager {
            username;
 
          */
-    }
+    
     
     func fetchWorkouts() async  -> [Any]   {
         do{

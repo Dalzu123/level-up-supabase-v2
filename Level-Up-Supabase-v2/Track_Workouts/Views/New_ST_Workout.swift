@@ -49,7 +49,7 @@ struct New_ST_Workout: View {
     @State var seconds: Int = 0
     @State var miles: Int = 0
     @State var milesDecimal: Double = 0.0
-    @State var milesDecimalCount = [".1", ".2", ".3", ".4", ".5", ".6", ".7", ".8",".9"]
+    @State var milesDecimalCount = [".0",".1", ".2", ".3", ".4", ".5", ".6", ".7", ".8",".9"]
     @State var distanceMeasurement = ""
     @State var distanceType = ["mi", "km"]
     //@State private var workouts = []
@@ -458,7 +458,7 @@ struct New_ST_Workout: View {
                                 
                             }
                             else if (typeOfWorkoutSelected == "Cardio") {
-                                
+                                print("\(miles)" + "\(milesDecimal)" + "\(distanceMeasurement)")
                             }
                             
                         }
