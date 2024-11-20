@@ -50,7 +50,7 @@ struct New_ST_Workout: View {
     @State var miles: Int = 0
     @State var milesDecimal: Double = 0.0
     @State var milesDecimalCount = [".0",".1", ".2", ".3", ".4", ".5", ".6", ".7", ".8",".9"]
-    @State var distanceMeasurement = ""
+    @State var distanceMeasurement = "mi"
     @State var distanceType = ["mi", "km"]
     //@State private var workouts = []
     private var database = DatabaseManager()
@@ -387,8 +387,8 @@ struct New_ST_Workout: View {
                                         }
                                     }.pickerStyle(WheelPickerStyle())
                                     Picker("", selection: $milesDecimal){
-                                        ForEach(milesDecimalCount, id: \.self) { i in
-                                            Text("\(i)")
+                                        ForEach(Array(stride(from: 0.0, to: 1.0, by: 0.05)), id: \.self) { i in
+                                            Text("\(String(format: "%.2f",i))").tag(i)
                                         }
                                     }.pickerStyle(WheelPickerStyle())
                                     Picker("", selection: $distanceMeasurement){
@@ -403,24 +403,33 @@ struct New_ST_Workout: View {
                                     .stroke(Color.black, lineWidth: 1)
                                 )//.padding(.horizontal)
                             VStack {
-                                Text("Time:")
-                                    .bold()
+                                //Text("Time:")
+                                //    .bold()
+                                    //.padding()
                                 HStack {
-                                    Picker("", selection: $hours){
+                                    Text("Hours").bold().frame(maxWidth: .infinity, alignment: .leading)
+                                    Text("Minutes").bold().frame(maxWidth: .infinity, alignment: .leading)
+                                    Text("Seconds").bold().frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                                HStack {
+                                    Picker("Hours", selection: $hours){
                                         ForEach(0..<27, id: \.self) { i in
-                                            Text("\(i) hours").tag(i)
+                                            Text("\(i)").tag(i)
                                         }
                                     }.pickerStyle(WheelPickerStyle())
-                                    Picker("", selection: $minutes){
+                                        //.frame(maxWidth: .infinity, alignment: .leading)
+                                    Picker("Minutes", selection: $minutes){
                                         ForEach(0..<60, id: \.self) { i in
-                                            Text("\(i) min").tag(i)
+                                            Text("\(i)").tag(i)
                                         }
                                     }.pickerStyle(WheelPickerStyle())
-                                    Picker("", selection: $seconds){
+                                        //.frame(maxWidth: .infinity, alignment: .leading)
+                                    Picker("Seconds", selection: $seconds){
                                         ForEach(0..<60, id: \.self) { i in
-                                            Text("\(i) seconds").tag(i)
+                                            Text("\(i)").tag(i)
                                         }
                                     }.pickerStyle(WheelPickerStyle())
+                                       //.frame(maxWidth: .infinity, alignment: .leading)
                                 }
                             }
                             .overlay(
@@ -458,7 +467,9 @@ struct New_ST_Workout: View {
                                 
                             }
                             else if (typeOfWorkoutSelected == "Cardio") {
-                                print("\(miles)" + "\(milesDecimal)" + "\(distanceMeasurement)")
+                                let totalDistance = Double(miles) + milesDecimal
+                                print(totalDistance,distanceMeasurement)
+                                print(hours,minutes,seconds)
                             }
                             
                         }
