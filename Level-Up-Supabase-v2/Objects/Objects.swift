@@ -32,12 +32,22 @@ struct WorkoutHistory: Identifiable, Decodable, Hashable {
 }
 
 struct WorkoutRecord: Encodable {
+    var exerciseType: String
     var weightMeasurementType: String
     var muscle: String
     var workout: String
     var sets: Int
     var reps: Int
     var weight: Double
+    var username: String
+}
+
+struct CardioRecord: Encodable {
+    var exerciseType: String
+    var workout: String
+    var distance: Double
+    var timeTaken: Decimal
+    var distanceMeasurement: String
     var username: String
 }
 

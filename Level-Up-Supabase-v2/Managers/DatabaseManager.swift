@@ -145,18 +145,34 @@ class DatabaseManager {
         return []
     }
     
-    func insertWorkoutRecords(weightMeasurementType: String, muscle: String, workout: String, sets: Int, reps: Int, weight: Double, username: String) {
+    func insertWorkoutRecords(exerciseType: String, weightMeasurementType: String, muscle: String, workout: String, sets: Int, reps: Int, weight: Double, username: String) {
         Task{
             do {
                 let response3 = try await supabase
                     .from("workoutRecords")
                     /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
-                     */.insert(WorkoutRecord(weightMeasurementType: weightMeasurementType, muscle: muscle, workout: workout, sets: sets, reps: reps, weight: weight, username: username))
+                     */.insert(WorkoutRecord(exerciseType: exerciseType, weightMeasurementType: weightMeasurementType, muscle: muscle, workout: workout, sets: sets, reps: reps, weight: weight, username: username))
                     .execute()
                 print("Insert Successful", response3)
             }
             catch {
                 print("You kinda suck", error)
+            }
+        }
+    }
+    
+    func insertCardioWorkout(exerciseType: String, cardioWorkout: String, distanceTraveled: Double, distanceMeasurement: String, timeTraveled: Decimal, username: String) {
+        Task{
+            do {
+                let response4 = try await supabase
+                    .from("workoutRecords")
+                    /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
+                     */.insert(CardioRecord(exerciseType: exerciseType, workout: cardioWorkout, distance: distanceTraveled, timeTaken: timeTraveled, distanceMeasurement: distanceMeasurement, username: username))
+                    .execute()
+                print("Insert Successful", response4)
+            }
+            catch {
+                print("You kinda suck at this shit", error)
             }
         }
     }

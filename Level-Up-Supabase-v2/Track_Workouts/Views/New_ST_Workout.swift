@@ -37,13 +37,14 @@ struct New_ST_Workout: View {
     @State private var darkMode = false
     @State private var cardioTypeSelected = ""
     //@State private var cardioTime = ""
-    @State private var typeOfWorkout = ["--Select--","Strengh Training","Cardio"]
+    @State private var typeOfWorkout = ["--Select--","Strength Training","Cardio"]
     @State private var typeOfWorkoutSelected = ""
     @State private var username = ""
     @State private var cardioWorkoutsSelection = ""
     let cardioWorkout = ["Run", "Walk", "Ride","Swim", "Stair Stepper"]
     @State private var cardioTime = Date()
     @State private var currentDate: Date?
+    @State var decimalSeconds: Decimal = 0.00
     @State var hours: Int = 0
     @State var minutes: Int = 0
     @State var seconds: Int = 0
@@ -107,7 +108,7 @@ struct New_ST_Workout: View {
                     .accentColor(.black)
                     .foregroundColor(.accentColor)
                     //Picklist for muscles
-                    if (typeOfWorkoutSelected == "Strengh Training") {
+                    if (typeOfWorkoutSelected == "Strength Training") {
                         Divider()
                         Text("Which muscle?")
                         Picker("Select Muscle", selection: $musclesInput) {
@@ -458,18 +459,25 @@ struct New_ST_Workout: View {
                             
                             if(typeOfWorkoutSelected == "Strength Training"){
                                 
-                                let workoutrecord = WorkoutRecord(weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
+                                let workoutrecord = WorkoutRecord(exerciseType: typeOfWorkoutSelected, weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
                                 isButtonTapped = true
                                 print("It tapped b")
                                 print(workoutrecord)
                                 
-                                database.insertWorkoutRecords(weightMeasurementType: weightMeasurementInput, muscle: musclesInput,workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
+                                database.insertWorkoutRecords(exerciseType: typeOfWorkoutSelected, weightMeasurementType: weightMeasurementInput, muscle: musclesInput,workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
                                 
                             }
                             else if (typeOfWorkoutSelected == "Cardio") {
                                 let totalDistance = Double(miles) + milesDecimal
+                                      decimalSeconds = (Decimal(seconds)/Decimal(100))
+                                    print (decimalSeconds)
+  
                                 print(totalDistance,distanceMeasurement)
                                 print(hours,minutes,seconds)
+                                let totalTime = ((Decimal(hours) * Decimal(60)) + Decimal(minutes) + decimalSeconds)
+                                
+                                database.insertCardioWorkout(exerciseType: typeOfWorkoutSelected, cardioWorkout: cardioWorkoutsSelection, distanceTraveled: totalDistance, distanceMeasurement: distanceMeasurement, timeTraveled: totalTime, username: username)
+
                             }
                             
                         }
