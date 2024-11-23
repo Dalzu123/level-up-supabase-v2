@@ -21,19 +21,21 @@ struct Level_Up_Supplements: View {
                     .frame(width:300,height: 250)
                 
                 
-
-            //Link(destination:  URL("www.amway.com/myshop/level-up"), Label: Text("Level-Up Store"))
-        }
-            NavigationLink(destination:Feedback(id: UUID()))
-            {
-                Text("Thoughts?")
+                
+                //Link(destination:  URL("www.amway.com/myshop/level-up"), Label: Text("Level-Up Store"))
             }
-            .padding(5)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.blue, lineWidth: 1)
-            ).accentColor(.blue)
-                .padding(.top, 20)
+            NavigationView {
+                NavigationLink(destination:Feedback(id: UUID()))
+                {
+                    Text("Thoughts?")
+                }
+                .padding(5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.blue, lineWidth: 1)
+                ).accentColor(.blue)
+                    .padding(.top, 20)
+            }
         }
         
     }

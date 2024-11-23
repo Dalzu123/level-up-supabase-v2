@@ -28,6 +28,7 @@ struct View_Workout_History: View {
     
     
     var body: some View {
+        NavigationView {
         VStack{
             Image("LevelUpBanner")
                 .resizable() // Allows the image to be resized
@@ -264,17 +265,17 @@ struct View_Workout_History: View {
             
             
             
-            NavigationLink(destination:Feedback(id: UUID()))
-            {
-                Text("Thoughts?")
+                NavigationLink(destination:Feedback(id: UUID()))
+                {
+                    Text("Thoughts?")
+                }
+                .padding(5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(Color.blue, lineWidth: 1)
+                ).accentColor(.blue)
+                    .padding(.top, 20)
             }
-            .padding(5)
-            .overlay(
-                RoundedRectangle(cornerRadius: 6)
-                    .stroke(Color.blue, lineWidth: 1)
-            ).accentColor(.blue)
-                .padding(.top, 20)
-            
         }
         .onAppear{
             Task{
