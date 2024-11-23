@@ -15,7 +15,7 @@ struct Level_Up_Supplements: View {
         VStack{
             Text("If you're looking for vitamins and/or supplements to help you with your goals, click the image below to check out the Level-Up store!")
                 .padding()
-            Link( destination:  URL(string: "www.amway.com/myshop/level-up")!) {
+            Link( destination:  URL(string: "http://www.amway.com/myshop/level-up")!) {
                 Image("Level-UpStoreImage")
                     .resizable()
                     .frame(width:300,height: 250)
