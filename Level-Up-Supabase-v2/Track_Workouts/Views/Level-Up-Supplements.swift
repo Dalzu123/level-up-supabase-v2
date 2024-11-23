@@ -24,7 +24,7 @@ struct Level_Up_Supplements: View {
 
             //Link(destination:  URL("www.amway.com/myshop/level-up"), Label: Text("Level-Up Store"))
         }
-            NavigationLink(destination:Feedback())
+            NavigationLink(destination:Feedback(id: UUID()))
             {
                 Text("Thoughts?")
             }
@@ -35,6 +35,7 @@ struct Level_Up_Supplements: View {
             ).accentColor(.blue)
                 .padding(.top, 20)
         }
+        
     }
 }
 

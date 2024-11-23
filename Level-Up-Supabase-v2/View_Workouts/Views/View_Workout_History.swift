@@ -21,6 +21,7 @@ struct View_Workout_History: View {
     @State private var username = ""
     @State private var workoutHistory:[WorkoutHistory] = []
     @State private var showTable = false
+    @State private var isActive = false
     
 
     
@@ -263,17 +264,16 @@ struct View_Workout_History: View {
             
             
             
-            NavigationLink(destination:Feedback())
+            NavigationLink(destination:Feedback(id: UUID()))
             {
                 Text("Thoughts?")
             }
             .padding(5)
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 6)
                     .stroke(Color.blue, lineWidth: 1)
             ).accentColor(.blue)
                 .padding(.top, 20)
-            
             
         }
         .onAppear{

@@ -53,6 +53,7 @@ struct New_ST_Workout: View {
     @State var milesDecimalCount = [".0",".1", ".2", ".3", ".4", ".5", ".6", ".7", ".8",".9"]
     @State var distanceMeasurement = "mi"
     @State var distanceType = ["mi", "km"]
+    @State var isActive = false
     //@State private var workouts = []
     private var database = DatabaseManager()
     /*struct Muscle: Decodable, Hashable {
@@ -497,7 +498,7 @@ struct New_ST_Workout: View {
                    Text("Successfully logged your workout")
                 }
 
-                    NavigationLink(destination:Feedback())
+                    NavigationLink(destination:Feedback(id: UUID()))
                     {
                         Text("Thoughts?")
                     }
@@ -524,6 +525,7 @@ struct New_ST_Workout: View {
                 }
             }
             }
+            
             
         }
 }

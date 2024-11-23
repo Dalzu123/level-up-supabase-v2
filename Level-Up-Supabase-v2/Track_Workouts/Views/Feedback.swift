@@ -12,9 +12,11 @@ import Supabase
 
 struct Feedback: View {
     //@StateObject var apiService = PostWorkoutAPI()
-    @State private var text: String = "Enter your thoughts here..."
-    @State private var name: String = ""
-    private var database = DatabaseManager()
+    @State  var id: UUID
+    @State  var text: String = "Enter your thoughts here..."
+    @State  var name: String = ""
+    @State var database = DatabaseManager()
+    
 
     
     var body: some View {
