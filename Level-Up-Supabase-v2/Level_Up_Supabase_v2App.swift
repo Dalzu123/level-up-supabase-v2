@@ -13,29 +13,38 @@ struct Level_Up_Supabase_v2App: App {
     init() {
         UITabBar.appearance().backgroundColor = UIColor.systemGray6
     }
+    @State var isAuthenticated = false;
     var body: some Scene {
-
-        WindowGroup {
-            TabView {
-                ProfileView().tabItem {
-                    Label("Profile", systemImage: "person")
-                }
-                New_ST_Workout()
-                    .tabItem {
-                        Label("Track Workout", systemImage: "plus")
-                }
-                
-                View_Workout_History()
-                    .tabItem {
-                    Label("View Progress", systemImage: "eye.fill")
-                }
-                Level_Up_Supplements()
-                    .tabItem {
-                        Label("Vitamins", systemImage: "pills")
+       
+            
+            WindowGroup {
+                TabView {
+                    LoginScreen()
+                        .tabItem {
+                        Label("Login", systemImage: "key")
                     }
+                    
+                    ProfileView()
+                        .tabItem {
+                        Label("Profile", systemImage: "person")
+                    }
+                    New_ST_Workout()
+                        .tabItem {
+                            Label("Track Workout", systemImage: "plus")
+                        }
+                    
+                    View_Workout_History()
+                        .tabItem {
+                            Label("View Progress", systemImage: "eye.fill")
+                        }
+                    Level_Up_Supplements()
+                        .tabItem {
+                            Label("Vitamins", systemImage: "pills")
+                        }
+                }
+                //ProfileView()
             }
-            //ProfileView()
-        }
+        
     }
 
 }

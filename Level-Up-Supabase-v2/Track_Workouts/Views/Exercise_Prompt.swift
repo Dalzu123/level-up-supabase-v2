@@ -19,9 +19,11 @@ struct Exercise_Prompt: View {
         
         NavigationView {
             
+         
             ZStack {
                 Color("AccentColor")
                     .ignoresSafeArea()
+                
                 VStack {
                     
                     Image("ProgressLogo1")

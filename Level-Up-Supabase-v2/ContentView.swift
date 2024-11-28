@@ -20,6 +20,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ProfileView()
+    LoginScreen()
 }
 

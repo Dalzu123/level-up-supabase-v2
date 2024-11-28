@@ -15,6 +15,7 @@ struct Feedback: View {
     @State  var id: UUID
     @State  var text: String = "Enter your thoughts here..."
     @State  var name: String = ""
+    @State var isButtonTapped = false
     @State var database = DatabaseManager()
     
 
@@ -53,6 +54,7 @@ struct Feedback: View {
                     
                     
                     database.insertFeedback(Feedback: text, Commenter: name)
+                    isButtonTapped = true
                     
                     
                     
@@ -65,6 +67,11 @@ struct Feedback: View {
                 .accentColor(Color.black)
                 .shadow(color: .black, radius: 3, x: 0, y: 2)
                 //border(Color.blue, width: 1)
+                
+                if isButtonTapped{
+                   Text("Successfully logged your feedback")
+                }
+
                 
                 NavigationLink(destination: New_ST_Workout()) {
                     Text("New Workout")

@@ -472,6 +472,7 @@ struct New_ST_Workout: View {
                                 let totalDistance = Double(miles) + milesDecimal
                                       decimalSeconds = (Decimal(seconds)/Decimal(100))
                                     print (decimalSeconds)
+                                isButtonTapped = true
   
                                 print(totalDistance,distanceMeasurement)
                                 print(hours,minutes,seconds)
@@ -524,10 +525,10 @@ struct New_ST_Workout: View {
                     print(workouts)
                 }
             }
-            }
-            
-            
         }
+            
+            
+    }
 }
     
 

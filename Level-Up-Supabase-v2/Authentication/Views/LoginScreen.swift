@@ -1,76 +1,92 @@
-//
-//  Login.swift
-//  Level-Up
-//
-//  Created by Diego Alzugaray on 5/12/24.
-//
 import SwiftUI
 import Combine
 import Foundation
+import Supabase
 
-struct LoginView: View {
-    
-    @State private var username: String = ""
-    @State private var password: String = ""
-        var body: some View {
+struct LoginScreen: View {
+  @State var email = ""
+ @State var password = ""
+@State var isLoading = false
+    @State var isNewUser = false
+    @State var newUser = false
+  @State var result: Result<Void, Error>?
+    @Environment(\.openWindow) private var openWindow
+
+  var body: some View {
+    Form {
+        Section {
+            TextField("Email", text: $email)
+                .textContentType(.emailAddress)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
             
-            NavigationView {
-                VStack {
-                    /*Image("ProgressLogo1")
-                        .resizable() // Allows the image to be resized
-                                    .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
-                                    .frame(width: 400, height: 200) // Sets the frame size of the image
-                                    .clipped()*/
-                    Text("Email")
-                    TextField("Email" ,text: $username)
-                        .padding()
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    Text("Password")
-                    SecureField("Password", text: $password)
-                        .padding()
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                   /* NavigationLink(destination: ProfileView()) {
-                        Button("Login")
-                        {
-                            
-                        }
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                            
-                    }
-                    NavigationLink(destination: CreateAccountView()) {
-                        Button("Create Account")
-                        {
-                            
-                        }
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                    */
-                    NavigationLink("Login") {
-                    }
-                        .padding(2.5)
-                        .border(Color.blue, width: 1)
-                        .cornerRadius(/*@START_MENU_TOKEN@*/3.0/*@END_MENU_TOKEN@*/)
-                        
-                    NavigationLink("Create Account") {CreateAccountView()}
-                        .padding(2)
-                        .border(Color.blue, width: 1)
-                        .cornerRadius(/*@START_MENU_TOKEN@*/3.0/*@END_MENU_TOKEN@*/)
-                }
-                .navigationTitle("Login")
-            }
+            TextField("Password", text: $password)
+              .textContentType(.emailAddress)
+              .textInputAutocapitalization(.never)
+              .autocorrectionDisabled()}
+
+      Section {
+        Button("Sign in") {
+          signInButtonTapped()
         }
-    }
+          Section {
+               Button(action: {
+                  isNewUser = true
+              }) {
+                  Text("Create An Account")
+                      .font(.title)
+                      .padding()
+                      .foregroundColor(.white)
+                      .background(Color.orange)
+                      .cornerRadius(10)
+              }
+              .sheet(isPresented: $isNewUser) {
+                  CreateAccountView()
+              }
+          }
 
-struct Login_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
+        if isLoading {
+          ProgressView()
+        }}
+
+      if let result {
+        Section {
+          switch result {
+          case .success:
+            Text("Check your inbox.")
+          case .failure(let error):
+            Text(error.localizedDescription).foregroundStyle(.red)
+          }
+        }
+      }
     }
+    .onOpenURL(perform: { url in
+      Task {
+        do {
+          try await supabase.auth.session(from: url)
+        } catch {
+          self.result = .failure(error)
+        }
+      }
+    })
+  }
+
+  func signInButtonTapped() {
+    Task {
+      isLoading = true
+      defer { isLoading = false }
+
+      do {
+        try await supabase.auth.signInWithOTP(
+            email: email,
+            redirectTo: URL(string: "io.supabase.user-management://login-callback")
+        )
+        result = .success(())
+      } catch {
+        result = .failure(error)
+      }
+    }
+  }
     
-}
 
+}
