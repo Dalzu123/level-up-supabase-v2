@@ -13,7 +13,7 @@ import Supabase
 struct Feedback: View {
     //@StateObject var apiService = PostWorkoutAPI()
     @State  var id: UUID
-    @State  var text: String = "Enter your thoughts here..."
+    @State  var text: String = "Thoughts?"
     @State  var name: String = ""
     @State var isButtonTapped = false
     @State var database = DatabaseManager()
