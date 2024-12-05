@@ -4,93 +4,143 @@
 //
 //  Created by Diego Alzugaray on 5/12/24.
 //
-import SwiftUI
-import Combine
-import Foundation
 
-struct CreateAccountView: View {
-    @State private var firstName = ""
-    @State private var lastName = ""
+import Supabase
+import SwiftUI
+import AuthenticationServices
+
+struct SignUpView: View {
     @State private var email = ""
     @State private var password = ""
-    @State private var confirmPassword = ""
-    @State private var isSecondScreenActive = false
-    @State private var testPasswords = false
-    @State private var showAlert = false
-    
-    var body: some View {
+    @State private var username = ""
+    @State private var errorMessage = ""
+    @State private var successMessage = ""
+    @State private var userId = UUID()
 
-            VStack {
-                
-                Image("ProgressLogo1")
-                    .resizable() // Allows the image to be resized
-                    .aspectRatio(contentMode: .fit) // Adjusts the aspect ratio of the image
-                    .frame(width: 400, height: 200) // Sets the frame size of the image
-                    .clipped()
-                Text("Create Account")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                
-                Form {
-                    Section(header: Text("User Information")) {
-                        TextField("First Name", text: $firstName)
-                            .autocapitalization(.words)
-                        TextField("Last Name", text: $lastName)
-                            .autocapitalization(.words)
-                        TextField("Email", text: $email)
-                            .keyboardType(.emailAddress)
-                            .autocapitalization(.none)
-                    }
-                    
-                    Section(header: Text("Password")) {
-                        SecureField("Password", text: $password)
-                        SecureField("Confirm Password", text: $confirmPassword)
+    var body: some View {
+        VStack {
+            TextField("Email", text: $email)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .autocapitalization(.none)
+
+            SecureField("Password", text: $password)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+
+            TextField("Username", text: $username)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+
+            Button("Sign Up") {
+                Task {
+                    do {
+                        try await signUpWithEmail(email: email, password: password, username: username)
+                        successMessage = "Sign-up successful!"
+                        errorMessage = ""
+                    } catch {
+                        errorMessage = error.localizedDescription
+                        successMessage = ""
                     }
                 }
-                
-                Button("Create Account") {
-                    testPasswords = true
-                    
-                    
-                }
-                if  testPasswords == true {
-                    if password == ""
-                    {
-                        Text("Enter and confirm a password")
-                            .foregroundStyle(.red)
-                    }
-                    
-                    // Implement account creation logic here
-                    /*
-                     showAlert = true
-                     .alert(isPresented: $showAlert) {
-                     Alert(title: "Missing Password", message: Text("Enter a password and confirm it"), dismissButton: .default(Text("OK")))
-                     }
-                     //Alert(title: Text( "Insert a password and //confirm it"), isPresented = $showAlert)
-                     }
-                     else{
-                     self.isSecondScreenActive = true
-                     }*/
-                    //SecondScreen()
-                    
-                    // self.isSecondScreenActive = true
-                    
-                    /*) {
-                     Text("Create Account")
-                     .foregroundColor(.white)
-                     .frame(maxWidth: .infinity)
-                     .padding()
-                     .background(Color.blue)
-                     .cornerRadius(10)
-                     .sheet(isPresented: $isSecondScreenActive) {
-                     SecondScreen()
-                     }
-                     }*/
-                }
-                //.padding()
             }
-            //   .navigationBarTitle("Sign Up", displayMode: .inline)
-            //  }
+            .padding()
+
+            if !successMessage.isEmpty {
+                Text(successMessage)
+                    .foregroundColor(.green)
+            }
+
+            if !errorMessage.isEmpty {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+            }
+        }
+        .padding()
+    }
+}
+
+
+func signUpWithEmail(email: String, password: String, username: String) async throws {
+    let client = SupabaseManager.shared.client
+    let database = DatabaseManager()
+    
+    // Create the user in Supabase Auth
+    let signUpResult = try await client.auth.signUp(email: email, password: password)
+    
+     let userId = signUpResult.user.id
+    
+    // Insert additional user details into the `profiles` table
+    let userProfile = UserProfile(userId: userId, email: email,
+        username: username /*,password: password*/)
+    try await client.from("profiles").insert(userProfile).execute()
+    
+    print("User signed up and profile created successfully!")
+}
+
+
+/*func signInWithApple() async throws {
+    let client = SupabaseManager.shared.client
+
+    // Create a request for Apple Sign-In
+    let request = ASAuthorizationAppleIDProvider().createRequest()
+    request.requestedScopes = [.fullName, .email]
+
+    let controller = ASAuthorizationController(authorizationRequests: [request])
+    controller.performRequests()
+
+    controller.didCompleteWithAuthorization = { authorization in
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            let identityToken = appleIDCredential.identityToken
+            let tokenString = String(data: identityToken!, encoding: .utf8)
+            
+            Task {
+                do {
+                    let authResult = try await client.auth.signInWithIdToken(
+                        idToken: tokenString!,
+                        provider: "apple"
+                    )
+
+                    // Save additional user details (e.g., full name) to the `profiles` table
+                    if let userId = authResult.user?.id, let fullName = appleIDCredential.fullName {
+                        let userProfile: [String: Any] = [
+                            "id": userId,
+                            "username": "\(fullName.givenName ?? "") \(fullName.familyName ?? "")"
+                        ]
+                        try await client.from("profiles").insert(values: userProfile).execute()
+                        print("User profile created for Apple Sign-In!")
+                    }
+                } catch {
+                    print("Apple Sign-In failed: \(error.localizedDescription)")
+                }
+            }
         }
     }
 
+    controller.didCompleteWithError = { error in
+        print("Apple Sign-In failed: \(error.localizedDescription)")
+    }
+}
+Usage in SwiftUI
+Use an Apple Sign-In button:
+
+swift
+Copy code
+struct AppleSignInButton: UIViewRepresentable {
+    func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
+        return ASAuthorizationAppleIDButton()
+    }
+    
+    func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {}
+}
+
+struct LoginView: View {
+    var body: some View {
+        VStack {
+            AppleSignInButton()
+                .frame(height: 50)
+                .onTapGesture {
+                    Task {
+                        try? await signInWithApple()
+                    }
+                }
+        }
+    }
+}*/

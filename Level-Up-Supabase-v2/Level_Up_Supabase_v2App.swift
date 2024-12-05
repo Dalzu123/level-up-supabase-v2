@@ -24,10 +24,6 @@ struct Level_Up_Supabase_v2App: App {
                         Label("Login", systemImage: "key")
                     }
                     
-                    ProfileView()
-                        .tabItem {
-                        Label("Profile", systemImage: "person")
-                    }
                     New_ST_Workout()
                         .tabItem {
                             Label("Track Workout", systemImage: "plus")

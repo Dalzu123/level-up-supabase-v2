@@ -20,6 +20,18 @@ struct Workout: Decodable, Hashable {
 }*/
 let supabase = SupabaseClient(supabaseURL: URL(string: String("https://wqhizsnuzwwyfsvifqrx.supabase.co"))!, supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxaGl6c251end3eWZzdmlmcXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMzNzQ4NzMsImV4cCI6MjAzODk1MDg3M30.AGxFi_2VoMGZzBInq6O2wL-Ky96r8i6bHsrQAG1bJNY")
 
+class SupabaseManager {
+    static let shared = SupabaseManager()
+    
+    let client: SupabaseClient
+
+     init() {
+        let supabaseUrl = URL(string: "https://wqhizsnuzwwyfsvifqrx.supabase.co")!
+        let supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxaGl6c251end3eWZzdmlmcXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMzNzQ4NzMsImV4cCI6MjAzODk1MDg3M30.AGxFi_2VoMGZzBInq6O2wL-Ky96r8i6bHsrQAG1bJNY"
+        client = SupabaseClient(supabaseURL: supabaseUrl, supabaseKey: supabaseAnonKey)
+    }
+}
+
 class DatabaseManager {
     
     
@@ -185,6 +197,22 @@ class DatabaseManager {
                     .from("feedback")
                     /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
                      */.insert(feedback(Feedback: Feedback, Commenter: Commenter))
+                    .execute()
+                print("Insert Successful", response4)
+            }
+            catch {
+                print("You kinda suck at this shit", error)
+            }
+        }
+    }
+    
+    func insertProfile(userId: UUID, email: String, username: String/*, password: String*/) {
+        Task{
+            do {
+                let response4 = try await supabase
+                    .from("profiles")
+                    /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
+                     */.insert(UserProfile(userId: userId,email: email, username: username/*, password: password*/))
                     .execute()
                 print("Insert Successful", response4)
             }

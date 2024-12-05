@@ -1,6 +1,7 @@
 import SwiftUI
 import Combine
 import Foundation
+import AuthenticationServices
 import Supabase
 
 struct LoginScreen: View {
@@ -68,7 +69,7 @@ struct LoginScreen: View {
             .background(Color.green)
             .cornerRadius(0)
             .sheet(isPresented: $isNewUser) {
-                CreateAccountView()
+                SignUpView()
             }
             
             

@@ -56,26 +56,15 @@ struct feedback: Encodable, Hashable {
     var Commenter: String
 }
 
-struct Profile: Decodable {
-  let username: String?
-  let fullName: String?
-  let website: String?
-
-  enum CodingKeys: String, CodingKey {
-    case username
-    case fullName = "full_name"
-    case website
-  }
+struct UserProfile: Encodable, Hashable {
+    var userId: UUID
+    var email: String?
+    var username: String
+  //  var password: String
+    var firstName: String?
+    var lastName: String?
+    
 }
 
-struct UpdateProfileParams: Encodable {
-  let username: String
-  let fullName: String
-  let website: String
 
-  enum CodingKeys: String, CodingKey {
-    case username
-    case fullName = "full_name"
-    case website
-  }
-}
+
