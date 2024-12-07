@@ -57,7 +57,7 @@ struct LoginScreen: View {
             Button("Sign in") {
                 Task {
                                         do {
-                                            let user = try await signInWithEmail(email: email, password: password)
+                                            let user = try await signInWithEmail(email: username, password: password)
                                             isLoggedIn = true
                                             print("Logged in as \(user?.email ?? "unknown")")
                                         } catch {
@@ -107,7 +107,7 @@ struct LoginScreen: View {
         let client = SupabaseManager.shared.client
 
         // Use the correct method for email/password sign-in
-        let result = try await client.auth.signIn(email: email, password: password)
+        let result = try await client.auth.signIn(email: username, password: password)
 
 
           user = result.user

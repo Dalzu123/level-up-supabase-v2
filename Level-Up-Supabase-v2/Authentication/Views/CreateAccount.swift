@@ -13,6 +13,8 @@ struct SignUpView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var username = ""
+    @State private var firstName = ""
+    @State private var lastName = ""
     @State private var errorMessage = ""
     @State private var successMessage = ""
     @State private var userId = UUID()
@@ -20,11 +22,20 @@ struct SignUpView: View {
 
     var body: some View {
         VStack {
-            TextField("Username", text: $username)
+            TextField("Username (Email)", text: $username)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
             SecureField("Password", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+            
+            TextField("First Name", text: $firstName)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .autocapitalization(.none)
+
+            TextField("Last Name", text: $lastName)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .autocapitalization(.none)
+
             
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -35,7 +46,7 @@ struct SignUpView: View {
             Button("Sign Up") {
                 Task {
                     do {
-                        try await signUpWithEmail(email: email, password: password, username: username)
+                        try await signUpWithEmail( password: password, username: username, firstName: firstName, lastName: lastName)
                         successMessage = "Sign-up successful!"
                         errorMessage = ""
                         authManager.isLoggedIn = true
@@ -62,18 +73,18 @@ struct SignUpView: View {
 }
 
 
-func signUpWithEmail(email: String, password: String, username: String) async throws {
+func signUpWithEmail(password: String, username: String, firstName: String, lastName: String) async throws {
     let client = SupabaseManager.shared.client
     
     
     // Create the user in Supabase Auth
-    let signUpResult = try await client.auth.signUp(email: email, password: password)
+    let signUpResult = try await client.auth.signUp(email: username, password: password)
     
      let userId = signUpResult.user.id
     
     // Insert additional user details into the `profiles` table
-    let userProfile = UserProfile(userId: userId, email: email,
-        username: username /*,password: password*/)
+    let userProfile = UserProfile(userId: userId,
+                                  username: username, firstName: firstName, lastName: lastName /*,password: password*/)
     try await client.from("profiles").insert(userProfile).execute()
     
     print("User signed up and profile created successfully!")

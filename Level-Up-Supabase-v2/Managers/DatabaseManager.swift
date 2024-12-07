@@ -231,7 +231,7 @@ class DatabaseManager {
                 let response4 = try await supabase
                     .from("profiles")
                     /*.insert("weightMeasurementType": weightMeasurementType, "muscle": muscle, "workout": workout, "sets": sets, "reps": reps, "weight": weight)
-                     */.insert(UserProfile(userId: userId,email: email, username: username/*, password: password*/))
+                     */.insert(UserProfile(userId: userId, username: username/*, password: password*/))
                     .execute()
                 print("Insert Successful", response4)
             }
