@@ -36,7 +36,7 @@ class DatabaseManager {
     
     
     
-    func fetchProfile(userId: UUID) async -> [UserProfile] {
+    /*func fetchProfile(userId: UUID) async -> [UserProfile] {
 
            do{
                let response: [UserProfile] = try  supabase.from("profiles")
@@ -57,7 +57,7 @@ class DatabaseManager {
            return []
        }
     
-    
+    */
     func fetchMuscles() async  -> [Muscle]   {
         do{
             let muscles: [Muscle] = try await supabase.from("muscle").select().execute().value
