@@ -10,19 +10,23 @@ import Foundation
 
 @main
 struct Level_Up_Supabase_v2App: App {
+    @StateObject private var authManager = AuthManager()
+    
+    
     init() {
         UITabBar.appearance().backgroundColor = UIColor.systemGray6
     }
-    @State var isAuthenticated = false;
+    @State var isAuthenticated = false; 
     var body: some Scene {
        
-            
+
             WindowGroup {
+                if authManager.isLoggedIn {
                 TabView {
-                    LoginScreen()
+                    /*LoginScreen()
                         .tabItem {
-                        Label("Login", systemImage: "key")
-                    }
+                            Label("Login", systemImage: "key")
+                        }*/
                     
                     New_ST_Workout()
                         .tabItem {
@@ -40,6 +44,13 @@ struct Level_Up_Supabase_v2App: App {
                 }
                 //ProfileView()
             }
+                else {
+                    LoginScreen()
+                        .environmentObject(authManager)
+        }
+
+            
+        }
         
     }
 

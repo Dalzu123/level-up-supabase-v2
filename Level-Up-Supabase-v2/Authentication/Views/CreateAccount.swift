@@ -60,7 +60,7 @@ struct SignUpView: View {
 
 func signUpWithEmail(email: String, password: String, username: String) async throws {
     let client = SupabaseManager.shared.client
-    let database = DatabaseManager()
+    
     
     // Create the user in Supabase Auth
     let signUpResult = try await client.auth.signUp(email: email, password: password)

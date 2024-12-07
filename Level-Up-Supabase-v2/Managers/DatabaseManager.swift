@@ -36,7 +36,26 @@ class DatabaseManager {
     
     
     
-   
+    func fetchProfile(userId: UUID) async -> [UserProfile] {
+
+           do{
+               let response: [UserProfile] = try  supabase.from("profiles")
+                   .select("*")
+               //.group("DATE_TRUNC('day', created_at), workout, muscle, username")
+                   .eq("id", value: userId)
+                   .single()
+                   .execute()
+               let userProfile = response
+               return userProfile
+           }
+           // catch {print("You suck")}
+           catch {print(error)}
+           
+           /*let response = try await supabase.from("muscle").select()
+            print(response)
+            */
+           return []
+       }
     
     
     func fetchMuscles() async  -> [Muscle]   {
@@ -221,4 +240,7 @@ class DatabaseManager {
             }
         }
     }
-}
+    
+
+    }
+

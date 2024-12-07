@@ -10,7 +10,12 @@ struct LoginScreen: View {
     @State var isLoading = false
     @State var isNewUser = false
     @State var newUser = false
+    @State  var errorMessage: String = ""
+    @State  var isLoggedIn: Bool = false
+    @State  var user: User?
     @State var result: Result<Void, Error>?
+    @State var isAuthenticated = false;
+    @EnvironmentObject var authManager: AuthManager
     @Environment(\.openWindow) private var openWindow
     
     var body: some View {
@@ -50,7 +55,16 @@ struct LoginScreen: View {
             
             
             Button("Sign in") {
-                signInButtonTapped()
+                Task {
+                                        do {
+                                            let user = try await signInWithEmail(email: email, password: password)
+                                            isLoggedIn = true
+                                            print("Logged in as \(user?.email ?? "unknown")")
+                                        } catch {
+                                            errorMessage = error.localizedDescription
+                                            isLoggedIn = false
+                                        }
+                                    }
             }
             .font(.title)
             .padding(5)
@@ -87,21 +101,28 @@ struct LoginScreen: View {
             
         }
     }
-    func signInButtonTapped() {
-        Task {
-            isLoading = true
-            defer { isLoading = false }
-            
-            do {
-                try await supabase.auth.signInWithOTP(
-                    email: email,
-                    redirectTo: URL(string: "io.supabase.user-management://login-callback")
-                )
-                result = .success(())
-            } catch {
-                result = .failure(error)
-            }
+
+
+    func signInWithEmail(email: String, password: String) async throws -> User? {
+        let client = SupabaseManager.shared.client
+
+        // Use the correct method for email/password sign-in
+        let result = try await client.auth.signIn(email: email, password: password)
+
+
+          user = result.user
+        if user?.email != "" {
+            print("Successfully logged in")
+            authManager.isLoggedIn = true
         }
+        else {
+            print("Error logging into the app")
+            authManager.isLoggedIn = false
+        }
+
+
+       // print("Signed in user: \(user.email ?? "Unknown email")")
+        return user
     }
 }
 

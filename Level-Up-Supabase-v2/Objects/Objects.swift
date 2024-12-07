@@ -56,7 +56,7 @@ struct feedback: Encodable, Hashable {
     var Commenter: String
 }
 
-struct UserProfile: Encodable, Hashable {
+struct UserProfile: Codable, Hashable {
     var userId: UUID
     var email: String?
     var username: String
