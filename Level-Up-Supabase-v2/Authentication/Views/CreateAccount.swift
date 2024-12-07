@@ -16,18 +16,21 @@ struct SignUpView: View {
     @State private var errorMessage = ""
     @State private var successMessage = ""
     @State private var userId = UUID()
+    @EnvironmentObject var authManager: AuthManager
 
     var body: some View {
         VStack {
+            TextField("Username", text: $username)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+            
+            SecureField("Password", text: $password)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+            
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.none)
 
-            SecureField("Password", text: $password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-
-            TextField("Username", text: $username)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            
 
             Button("Sign Up") {
                 Task {
@@ -35,6 +38,7 @@ struct SignUpView: View {
                         try await signUpWithEmail(email: email, password: password, username: username)
                         successMessage = "Sign-up successful!"
                         errorMessage = ""
+                        authManager.isLoggedIn = true
                     } catch {
                         errorMessage = error.localizedDescription
                         successMessage = ""

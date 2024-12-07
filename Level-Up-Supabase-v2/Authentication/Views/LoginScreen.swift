@@ -5,7 +5,7 @@ import AuthenticationServices
 import Supabase
 
 struct LoginScreen: View {
-    @State var email = ""
+    @State var username = ""
     @State var password = ""
     @State var isLoading = false
     @State var isNewUser = false
@@ -29,12 +29,12 @@ struct LoginScreen: View {
             
             Form {
                 Section {
-                    TextField("Email", text: $email)
+                    TextField("Username", text: $username)
                         .textContentType(.emailAddress)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                     
-                    TextField("Password", text: $password)
+                    SecureField("Password", text: $password)
                         .textContentType(.emailAddress)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
