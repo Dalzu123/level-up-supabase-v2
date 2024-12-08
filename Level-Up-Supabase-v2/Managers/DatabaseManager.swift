@@ -5,7 +5,10 @@
 //  Created by Diego Alzugaray on 8/18/24.
 //
 
+import SwiftUI
+import Combine
 import Foundation
+import AuthenticationServices
 import Supabase
 
 /*struct Muscle: Decodable, Hashable {
@@ -20,7 +23,10 @@ struct Workout: Decodable, Hashable {
 }*/
 let supabase = SupabaseClient(supabaseURL: URL(string: String("https://wqhizsnuzwwyfsvifqrx.supabase.co"))!, supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxaGl6c251end3eWZzdmlmcXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMzNzQ4NzMsImV4cCI6MjAzODk1MDg3M30.AGxFi_2VoMGZzBInq6O2wL-Ky96r8i6bHsrQAG1bJNY")
 
+
 class SupabaseManager {
+    
+    
     static let shared = SupabaseManager()
     
     let client: SupabaseClient
@@ -239,6 +245,33 @@ class DatabaseManager {
                 print("You kinda suck at this shit", error)
             }
         }
+    }
+    
+    func signInWithEmail(username: String, password: String) async throws -> User? {
+        @State var user: User?
+        @EnvironmentObject var authManager: AuthManager
+
+        let email = username
+        // Use the correct method for email/password sign-in
+        print ("before the result try")
+    
+        let result = try await supabase.auth.signIn(email: email, password: password)
+        print(result)
+        
+        
+        user = result.user
+        if user?.email != "" {
+            print("Successfully logged in")
+            authManager.isLoggedIn = true
+        }
+        else {
+            print("Error logging into the app")
+            authManager.isLoggedIn = false
+        }
+        
+        
+        // print("Signed in user: \(user.email ?? "Unknown email")")
+        return user
     }
     
 

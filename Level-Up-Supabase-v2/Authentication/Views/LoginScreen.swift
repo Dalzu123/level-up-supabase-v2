@@ -17,6 +17,7 @@ struct LoginScreen: View {
     @State var isAuthenticated = false;
     @EnvironmentObject var authManager: AuthManager
     @Environment(\.openWindow) private var openWindow
+    private var database = DatabaseManager()
     
     var body: some View {
         VStack {
@@ -57,7 +58,7 @@ struct LoginScreen: View {
             Button("Sign in") {
                 Task {
                                         do {
-                                            let user = try await signInWithEmail(email: username, password: password)
+                                            let user = try await database.signInWithEmail(username: username, password: password)
                                             isLoggedIn = true
                                             print("Logged in as \(user?.email ?? "unknown")")
                                         } catch {
@@ -103,11 +104,13 @@ struct LoginScreen: View {
     }
 
 
-    func signInWithEmail(email: String, password: String) async throws -> User? {
+   /* func signInWithEmail(email: String, password: String) async throws -> User? {
         let client = SupabaseManager.shared.client
 
         // Use the correct method for email/password sign-in
+        print ("before the result try")
         let result = try await client.auth.signIn(email: username, password: password)
+        print(result)
 
 
           user = result.user
@@ -123,7 +126,7 @@ struct LoginScreen: View {
 
        // print("Signed in user: \(user.email ?? "Unknown email")")
         return user
-    }
+    }*/
 }
 
 
