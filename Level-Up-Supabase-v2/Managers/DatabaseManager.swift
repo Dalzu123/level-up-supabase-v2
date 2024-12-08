@@ -247,33 +247,27 @@ class DatabaseManager {
         }
     }
     
-    func signInWithEmail(username: String, password: String) async throws -> User? {
+    func signInWithEmail(email: String, password: String) async throws -> User? {
         @State var user: User?
         @EnvironmentObject var authManager: AuthManager
-
-        let email = username
+        @State var errorMessage = ""
+        
+        //let email = username
         // Use the correct method for email/password sign-in
         print ("before the result try")
-    
-        let result = try await supabase.auth.signIn(email: email, password: password)
-        print(result)
-        
-        
-        user = result.user
-        if user?.email != "" {
-            print("Successfully logged in")
-            authManager.isLoggedIn = true
+        do {
+                       let user = try await supabase.auth.signIn(email: email, password: password)
+            print("Signed in successfully: \(user)")
+            
+                   } catch {print(error)
+                       errorMessage = "Failed to sign in: \(error.localizedDescription)"
+                   }
+            
+            // print("Signed in user: \(user.email ?? "Unknown email")")
+            return user
         }
-        else {
-            print("Error logging into the app")
-            authManager.isLoggedIn = false
-        }
-        
-        
-        // print("Signed in user: \(user.email ?? "Unknown email")")
-        return user
-    }
+}
     
 
-    }
+    
 

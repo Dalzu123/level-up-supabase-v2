@@ -6,6 +6,7 @@ import Supabase
 
 struct LoginScreen: View {
     @State var username = ""
+    @State var email = ""
     @State var password = ""
     @State var isLoading = false
     @State var isNewUser = false
@@ -30,7 +31,7 @@ struct LoginScreen: View {
             
             Form {
                 Section {
-                    TextField("Username", text: $username)
+                    TextField("Username", text: $email)
                         .textContentType(.emailAddress)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
@@ -57,21 +58,27 @@ struct LoginScreen: View {
             
             Button("Sign in") {
                 Task {
-                                        do {
-                                            let user = try await database.signInWithEmail(username: username, password: password)
-                                            isLoggedIn = true
-                                            print("Logged in as \(user?.email ?? "unknown")")
-                                        } catch {
-                                            errorMessage = error.localizedDescription
-                                            isLoggedIn = false
-                                        }
-                                    }
+                    do {
+                        print(email)
+                        let user = try await supabase.auth.signIn(email: email, password: password)
+                        print(user)
+                        // print("Signed in successfully. User email: \(user.email ?? "No email available")")
+                        // if user != nil {
+                        authManager.isLoggedIn = true
+                        // print("Logged in as \(user?.email ?? "unknown")")
+                        //  }
+                    } catch {
+                        print(error)
+                        errorMessage = error.localizedDescription
+                        authManager.isLoggedIn = false
+                    }
+                }
             }
             .font(.title)
             .padding(5)
             .foregroundColor(.white)
-            .background(Color.blue)
-            .cornerRadius(0)
+            .background(Color.green)
+            .cornerRadius(2)
             
             Button(action: {
                 isNewUser = true
@@ -81,11 +88,20 @@ struct LoginScreen: View {
             .font(.title)
             .padding(5)
             .foregroundColor(.white)
-            .background(Color.green)
+            .background(Color.blue)
             .cornerRadius(0)
             .sheet(isPresented: $isNewUser) {
                 SignUpView()
             }
+            
+            Text(errorMessage)
+                .foregroundStyle(
+                    LinearGradient(
+                    colors: [.red],
+                    startPoint: .top,
+                    endPoint: .bottom)
+                    )
+        }
             
             
             
@@ -127,6 +143,6 @@ struct LoginScreen: View {
        // print("Signed in user: \(user.email ?? "Unknown email")")
         return user
     }*/
-}
+
 
 
