@@ -313,6 +313,7 @@ struct New_ST_Workout: View {
                                     Text("\(reps)")
                                 }
                             }
+                            .frame(width:75)
                             .pickerStyle(.menu)
                             .accentColor(.black)
                             .overlay(

@@ -298,7 +298,7 @@ struct View_Workout_History: View {
                     if (showTable == true && typeOfWorkoutSelected == "Strength Training") {
                         List {
                             HStack {
-                                Text("Workout").bold().frame(maxWidth: .infinity, alignment: .leading)
+                                //Text("Workout").bold().frame(maxWidth: .infinity, alignment: .leading)
                                 Text("Sets").bold().frame(maxWidth: .infinity, alignment: .leading)
                                 Text("Reps").bold().frame(maxWidth: .infinity, alignment: .leading)
                                 Text("Weight").bold().frame(maxWidth: .infinity, alignment: .leading)
@@ -308,7 +308,7 @@ struct View_Workout_History: View {
                             
                             ForEach($workoutHistory) { row in
                                 HStack {
-                                    Text("\(row.workout.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
+                                   // Text("\(row.workout.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
                                     Text(String(row.sets.wrappedValue)).frame(maxWidth: .infinity, alignment: .leading)
                                     Text("\(row.reps.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
                                     Text("\(row.weight.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
@@ -322,17 +322,17 @@ struct View_Workout_History: View {
                     else if(showTable == true && typeOfWorkoutSelected == "Cardio") {
                         List {
                             HStack {
-                                Text("Workout").bold().frame(maxWidth: .infinity, alignment: .leading)
+                                //Text("Workout").bold().frame(maxWidth: .infinity, alignment: .leading)
                                 Text("Distance").bold().frame(maxWidth: .infinity, alignment: .leading)
-                                Text("Distance Measurement").bold().frame(maxWidth: .infinity, alignment: .leading)
-                                Text("Time Taken (Minutes.Seconds").bold().frame(maxWidth: .infinity, alignment: .leading)
-                                Text("Date").bold().frame(maxWidth: .infinity, alignment: .leading)
+                                Text("Mi/Km").bold().frame(maxWidth: .infinity, alignment: .leading)
+                                Text("Minutes.Seconds").bold().frame(maxWidth: .infinity, alignment: .leading)
+                                Text("Date added").bold().frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .padding()
                             
                             ForEach($cardioWorkoutHistory) { row in
                                 HStack {
-                                    Text("\(row.workout.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
+                                   // Text("\(row.workout.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
                                     Text(String(row.distance.wrappedValue)).frame(maxWidth: .infinity, alignment: .leading)
                                     Text("\(row.distanceMeasurement.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
                                     Text("\(formatDecimal(row.timeTaken.wrappedValue))").frame(maxWidth: .infinity, alignment: .leading)
