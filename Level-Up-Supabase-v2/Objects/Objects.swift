@@ -29,6 +29,19 @@ struct WorkoutHistory: Identifiable, Decodable, Hashable {
     var weight: Double
     var username: String
     var created_at: Date
+    var distance: Double
+    var distanceMeasurement: String
+    var timeTaken: Decimal
+}
+
+struct CardioWorkoutHistory: Identifiable, Decodable, Hashable {
+    var id: Int
+    var workout: String
+    var username: String
+    var created_at: Date
+    var distance: Double
+    var distanceMeasurement: String
+    var timeTaken: Decimal
 }
 
 struct WorkoutRecord: Encodable {

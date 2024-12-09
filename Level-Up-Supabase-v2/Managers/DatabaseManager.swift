@@ -99,6 +99,27 @@ class DatabaseManager {
          */
         return []
     }
+    
+    func fetcCardioHistory(workout: String, username: String/*, beginDate: Date, endDate: Date*/) async  -> [CardioWorkoutHistory]   {
+        do{
+            let cardioWorkoutHistory: [CardioWorkoutHistory] = try await supabase.from("workoutRecords")
+                .select("id,workout, distance, distanceMeasurement,timeTaken, username, created_at")
+            //.group("DATE_TRUNC('day', created_at), workout, muscle, username")
+                .eq("workout", value: workout)
+                .eq("username", value: username)
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+            return cardioWorkoutHistory
+        }
+        // catch {print("You suck")}
+        catch {print(error)}
+        
+        /*let response = try await supabase.from("muscle").select()
+         print(response)
+         */
+        return []
+    }
         
         /*
 

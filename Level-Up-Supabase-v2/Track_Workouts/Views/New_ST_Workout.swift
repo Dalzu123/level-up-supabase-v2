@@ -40,7 +40,7 @@ struct New_ST_Workout: View {
     @State private var typeOfWorkout = ["--Select--","Strength Training","Cardio"]
     @State private var typeOfWorkoutSelected = ""
     @State private var username = ""
-    @State private var cardioWorkoutsSelection = ""
+    @State private var cardioWorkoutsSelection = "Run"
     let cardioWorkout = ["Run", "Walk", "Ride","Swim", "Stair Stepper"]
     @State private var cardioTime = Date()
     @State private var currentDate: Date?
