@@ -29,17 +29,25 @@ struct Level_Up_Supabase_v2App: App {
                         }*/
                     
                     New_ST_Workout()
+                        .environmentObject(authManager)
                         .tabItem {
                             Label("Track Workout", systemImage: "plus")
                         }
+                        
                     
                     View_Workout_History()
+                        .environmentObject(authManager)
                         .tabItem {
                             Label("View Progress", systemImage: "eye.fill")
                         }
+                        
                     Level_Up_Supplements()
                         .tabItem {
                             Label("Vitamins", systemImage: "pills")
+                        }
+                    Feedback()
+                        .tabItem {
+                            Label("Thoughts", systemImage: "message")
                         }
                 }
                 //ProfileView()

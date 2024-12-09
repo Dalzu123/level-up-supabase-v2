@@ -54,6 +54,7 @@ struct New_ST_Workout: View {
     @State var distanceMeasurement = "mi"
     @State var distanceType = ["mi", "km"]
     @State var isActive = false
+    @EnvironmentObject var authManager: AuthManager
     //@State private var workouts = []
     private var database = DatabaseManager()
     /*struct Muscle: Decodable, Hashable {
@@ -83,6 +84,7 @@ struct New_ST_Workout: View {
     var body: some View {
         //@State private var typeOfWorkoutSelected = ""
         NavigationView {
+            
             ZStack {
                 Color("AccentColor")
                     .ignoresSafeArea()
@@ -447,25 +449,24 @@ struct New_ST_Workout: View {
                     else{
                         // .border(Color.black, width:1)
                        // Text("Email (Will become Username)")
-                        TextField("Email (Will become Username)", text: $username)
+                     /*   TextField("Email (Will become Username)", text: $username)
                             .padding(5)
                             .foregroundColor(.black)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 0)
                                     .stroke(Color.blue, lineWidth: 1)
-                            )
-                        
+                            )*/
                         //Submit workout via API call
                         Button("Submit Workout") {
                             
                             if(typeOfWorkoutSelected == "Strength Training"){
                                 
-                                let workoutrecord = WorkoutRecord(exerciseType: typeOfWorkoutSelected, weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
+                                let workoutrecord = WorkoutRecord(exerciseType: typeOfWorkoutSelected, weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: authManager.authenticatedUsername)
                                 isButtonTapped = true
                                 print("It tapped b")
                                 print(workoutrecord)
                                 
-                                database.insertWorkoutRecords(exerciseType: typeOfWorkoutSelected, weightMeasurementType: weightMeasurementInput, muscle: musclesInput,workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: username)
+                                database.insertWorkoutRecords(exerciseType: typeOfWorkoutSelected, weightMeasurementType: weightMeasurementInput, muscle: musclesInput,workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: authManager.authenticatedUsername)
                                 
                             }
                             else if (typeOfWorkoutSelected == "Cardio") {
@@ -478,7 +479,7 @@ struct New_ST_Workout: View {
                                 print(hours,minutes,seconds)
                                 let totalTime = ((Decimal(hours) * Decimal(60)) + Decimal(minutes) + decimalSeconds)
                                 
-                                database.insertCardioWorkout(exerciseType: typeOfWorkoutSelected, cardioWorkout: cardioWorkoutsSelection, distanceTraveled: totalDistance, distanceMeasurement: distanceMeasurement, timeTraveled: totalTime, username: username)
+                                database.insertCardioWorkout(exerciseType: typeOfWorkoutSelected, cardioWorkout: cardioWorkoutsSelection, distanceTraveled: totalDistance, distanceMeasurement: distanceMeasurement, timeTraveled: totalTime, username: authManager.authenticatedUsername)
 
                             }
                             
@@ -490,6 +491,7 @@ struct New_ST_Workout: View {
                         
                         
                     }
+                    
                 
                 /* if let responseData = apiService.responseData {
                  // Display data from the API response
@@ -499,7 +501,7 @@ struct New_ST_Workout: View {
                    Text("Successfully logged your workout")
                 }
 
-                    NavigationLink(destination:Feedback(id: UUID()))
+                    NavigationLink(destination:Feedback())
                     {
                         Text("Thoughts?")
                     }
@@ -517,6 +519,7 @@ struct New_ST_Workout: View {
                 
             }.onAppear{
                 Task{
+
                     let response = await database.fetchMuscles()
                     muscles = response
                     let response2 = await database.fetchWorkouts()

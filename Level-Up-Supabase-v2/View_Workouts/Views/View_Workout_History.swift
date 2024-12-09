@@ -22,6 +22,7 @@ struct View_Workout_History: View {
     @State private var workoutHistory:[WorkoutHistory] = []
     @State private var showTable = false
     @State private var isActive = false
+    @EnvironmentObject var authManager: AuthManager
     
 
     
@@ -208,11 +209,11 @@ struct View_Workout_History: View {
                     
                     //          HStack {
                     VStack{
-                        TextField("username",text: $username)
+                       /* TextField("username",text: $username)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 0)
                                     .stroke(Color.blue, lineWidth: 1)
-                            )
+                            )*/
                         /*
                          // From and To dates for history
                          Text("From:")
@@ -231,7 +232,7 @@ struct View_Workout_History: View {
                     Button("Get Workout History") {
                         Task{
                             
-                            await    workoutHistory = database.fetchWorkoutHistory(muscle: musclesSelection, workout: workoutsSelection, username: username/*, beginDate: beginDate, endDate: endDate*/)
+                            await    workoutHistory = database.fetchWorkoutHistory(muscle: musclesSelection, workout: workoutsSelection, username: authManager.authenticatedUsername/*, beginDate: beginDate, endDate: endDate*/)
                             print(workoutHistory)
                             showTable = true
                             
@@ -269,7 +270,7 @@ struct View_Workout_History: View {
                     
                     
                     
-                    NavigationLink(destination:Feedback(id: UUID()))
+                    NavigationLink(destination:Feedback())
                     {
                         Text("Thoughts?")
                     }

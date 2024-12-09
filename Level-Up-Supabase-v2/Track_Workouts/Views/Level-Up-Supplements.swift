@@ -18,19 +18,19 @@ struct Level_Up_Supplements: View {
                             .ignoresSafeArea()
             VStack{
                 
-                Text("If you're looking for vitamins and/or supplements to help you with your goals, click the image below to check out the Level-Up store!")
+                Text("If you're looking for vitamins and/or supplements to help you with your goals, click the image below to check out the Level-Up store! It is actually a real store")
                     .padding()
                 Link( destination:  URL(string: "http://www.amway.com/myshop/level-up")!) {
                     Image("Level-UpStoreImage")
                         .resizable()
-                        .frame(width:300,height: 250)
+                        .frame(width:150,height: 125)
                     
                     
                     
                     //Link(destination:  URL("www.amway.com/myshop/level-up"), Label: Text("Level-Up Store"))
                 }
                 
-                    NavigationLink(destination:Feedback(id: UUID()))
+                    NavigationLink(destination:Feedback())
                     {
                         Text("Thoughts?")
                     }

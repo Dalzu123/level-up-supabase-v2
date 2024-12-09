@@ -12,7 +12,7 @@ import Supabase
 
 struct Feedback: View {
     //@StateObject var apiService = PostWorkoutAPI()
-    @State  var id: UUID
+    //@State  var id: UUID
     @State  var text: String = "Thoughts?"
     @State  var name: String = ""
     @State var isButtonTapped = false
@@ -73,15 +73,8 @@ struct Feedback: View {
                 }
 
                 
-                NavigationLink(destination: New_ST_Workout()) {
-                    Text("New Workout")
-                }
-                .accentColor(.blue)
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.blue, lineWidth: 1)
-                )
+                
+                
                 
                 //.border(Color.blue, width: 1)
                 

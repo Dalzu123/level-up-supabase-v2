@@ -7,6 +7,7 @@ import Supabase
 
 class AuthManager: ObservableObject {
     @Published var isLoggedIn: Bool = false
+    @Published var authenticatedUsername = ""
     
     
     func logIn() {

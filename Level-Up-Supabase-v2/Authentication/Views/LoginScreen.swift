@@ -65,6 +65,7 @@ struct LoginScreen: View {
                         // print("Signed in successfully. User email: \(user.email ?? "No email available")")
                         // if user != nil {
                         authManager.isLoggedIn = true
+                        authManager.authenticatedUsername = email
                         // print("Logged in as \(user?.email ?? "unknown")")
                         //  }
                     } catch {
@@ -78,7 +79,7 @@ struct LoginScreen: View {
             .padding(5)
             .foregroundColor(.white)
             .background(Color.green)
-            .cornerRadius(2)
+            .cornerRadius(10)
             
             Button(action: {
                 isNewUser = true
