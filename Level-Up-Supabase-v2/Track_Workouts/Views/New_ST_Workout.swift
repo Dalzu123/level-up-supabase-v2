@@ -41,7 +41,9 @@ struct New_ST_Workout: View {
     @State private var typeOfWorkoutSelected = ""
     @State private var username = ""
     @State private var cardioWorkoutsSelection = "Run"
-    let cardioWorkout = ["Run", "Walk", "Ride","Swim", "Stair Stepper"]
+    @State private var newWorkoutName = ""
+    @State private var newCardioWorkoutName = ""
+    let cardioWorkout = ["Run", "Walk", "Ride","Swim", "Stair Stepper","Other:"]
     @State private var cardioTime = Date()
     @State private var currentDate: Date?
     @State var decimalSeconds: Decimal = 0.00
@@ -281,6 +283,15 @@ struct New_ST_Workout: View {
                             .foregroundColor(.accentColor)
                         }
                         
+                        if workoutsInput == "Other:" {
+                            TextField("Workout Name", text: $newWorkoutName)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 0)
+                                        .stroke(Color.blue, lineWidth: 1)
+                                )
+                
+                        }
+                        
                         //Sets textbox
                         // let workoutsInput = "Bench Press"
                         HStack {
@@ -380,6 +391,13 @@ struct New_ST_Workout: View {
                         .imageScale(.large)
                         .accentColor(.black)
                         .foregroundColor(.accentColor)
+                        if cardioWorkoutsSelection == "Other:" {
+                            TextField("Workout Name", text: $newCardioWorkoutName)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 0)
+                                        .stroke(Color.blue, lineWidth: 1)
+                                )
+                        }
                         VStack {
                             VStack {
                             Text("Distance:")
@@ -462,6 +480,10 @@ struct New_ST_Workout: View {
                             
                             if(typeOfWorkoutSelected == "Strength Training"){
                                 
+                                if workoutsInput == "Other:" {
+                                    workoutsInput = newWorkoutName
+                                }
+                                
                                 let workoutrecord = WorkoutRecord(exerciseType: typeOfWorkoutSelected, weightMeasurementType: weightMeasurementInput, muscle: musclesInput, workout: workoutsInput, sets: setsInput, reps: repsInput, weight: weightInput, username: authManager.authenticatedUsername)
                                 isButtonTapped = true
                                 print("It tapped b")
@@ -471,6 +493,10 @@ struct New_ST_Workout: View {
                                 
                             }
                             else if (typeOfWorkoutSelected == "Cardio") {
+                                if cardioWorkoutsSelection == "Other:" {
+                                    cardioWorkoutsSelection = newCardioWorkoutName
+                                }
+                                
                                 let totalDistance = Double(miles) + milesDecimal
                                       decimalSeconds = (Decimal(seconds)/Decimal(100))
                                     print (decimalSeconds)
