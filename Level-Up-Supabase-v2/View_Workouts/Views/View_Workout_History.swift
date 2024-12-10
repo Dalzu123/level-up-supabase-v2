@@ -325,17 +325,34 @@ struct View_Workout_History: View {
                                 //Text("Workout").bold().frame(maxWidth: .infinity, alignment: .leading)
                                 Text("Distance").bold().frame(maxWidth: .infinity, alignment: .leading)
                                 Text("Mi/Km").bold().frame(maxWidth: .infinity, alignment: .leading)
-                                Text("Minutes.Seconds").bold().frame(maxWidth: .infinity, alignment: .leading)
+                                Text("Time").bold().frame(maxWidth: .infinity, alignment: .leading)
                                 Text("Date added").bold().frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .padding()
                             
                             ForEach($cardioWorkoutHistory) { row in
                                 HStack {
+                                   //Gives me minutes Integer
+                                    let intValue = extractIntegerPart(row.timeTaken.wrappedValue)
+                                    //Gives me hours and decimal
+                                    let minValue = Decimal(intValue / 60)
+                                    //Making minValue a decimal
+                                   // let decimalMinValue = minValue
+                                    //Gives me hours
+                                    let intValue2 = extractIntegerPart(minValue)
+                                    //Gives me minutes decimal to multipy by 60 to get minutes
+                                    let minDecimalValue = (minValue - (Decimal(intValue2))) as Decimal
+                                    //To get minutes
+                                    let extraMinutesValue = (minDecimalValue * 60) as Decimal
+                                    //let decimalValue = row.timeTaken.wrappedValue - (Decimal(intValue) as Decimal)
+                                    //let floorNumber = floor(Double(intValue)/60)
+                                    //Text(String(intValue))
                                    // Text("\(row.workout.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
                                     Text(String(row.distance.wrappedValue)).frame(maxWidth: .infinity, alignment: .leading)
                                     Text("\(row.distanceMeasurement.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("\(formatDecimal(row.timeTaken.wrappedValue))").frame(maxWidth: .infinity, alignment: .leading)
+                                   // Text("\(formatDecimal(row.timeTaken.wrappedValue)) (Min.Seconds)").frame(maxWidth: .infinity, alignment: .leading)
+                                    //Text("\(floorNumber)").frame(maxWidth: .infinity, alignment: .leading)
+                                    Text("\(intValue) hours and " + "\(extraMinutesValue) minutes").frame(maxWidth: .infinity, alignment: .leading)
                                     Text("\(row.created_at.wrappedValue.formatted(.dateTime.year().month().day()))").frame(maxWidth: .infinity, alignment: .leading)
                                 }
                                 .padding()
@@ -382,7 +399,10 @@ func formatDecimal(_ value: Decimal) -> String {
     formatter.maximumFractionDigits = 2 // Limit to 2 decimal places
     return formatter.string(for: value) ?? "N/A"
 }
-
+func extractIntegerPart(_ value: Decimal) -> Int {
+    // Convert Decimal to NSDecimalNumber and extract the integer value
+    return NSDecimalNumber(decimal: value).intValue
+}
 #Preview {
     View_Workout_History()
 }
