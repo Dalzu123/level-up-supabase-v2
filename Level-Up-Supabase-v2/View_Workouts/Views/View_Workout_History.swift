@@ -334,26 +334,49 @@ struct View_Workout_History: View {
                                 HStack {
                                    //Gives me minutes Integer
                                     let intValue = extractIntegerPart(row.timeTaken.wrappedValue)
-                                    //Gives me hours and decimal
-                                    let minValue = Decimal(intValue / 60)
-                                    //Making minValue a decimal
-                                   // let decimalMinValue = minValue
-                                    //Gives me hours
-                                    let intValue2 = extractIntegerPart(minValue)
-                                    //Gives me minutes decimal to multipy by 60 to get minutes
-                                    let minDecimalValue = (minValue - (Decimal(intValue2))) as Decimal
-                                    //To get minutes
-                                    let extraMinutesValue = (minDecimalValue * 60) as Decimal
-                                    //let decimalValue = row.timeTaken.wrappedValue - (Decimal(intValue) as Decimal)
-                                    //let floorNumber = floor(Double(intValue)/60)
-                                    //Text(String(intValue))
-                                   // Text("\(row.workout.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
-                                    Text(String(row.distance.wrappedValue)).frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("\(row.distanceMeasurement.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
-                                   // Text("\(formatDecimal(row.timeTaken.wrappedValue)) (Min.Seconds)").frame(maxWidth: .infinity, alignment: .leading)
-                                    //Text("\(floorNumber)").frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("\(intValue) hours and " + "\(extraMinutesValue) minutes").frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("\(row.created_at.wrappedValue.formatted(.dateTime.year().month().day()))").frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                    if intValue >= 60 {
+                                        //Gives me hours and decimal
+                                        // let minValue = Decimal(intValue / 60)
+                                        let minValue = Double(intValue) / Double(60)
+                                       
+                                        //Gives me hours
+                                        let hoursValue = Int(floor(Double(intValue) / Double(60)))
+                                        //Gives me minutes decimal to multipy by 60 to get minutes
+                                        let minDecimalValue = (minValue - (Double(hoursValue)))
+                                        //To get minutes
+                                        let extraMinutesValue = Int(round((minDecimalValue * 60.0)))
+                                        //Give me seconds
+                                        let decimalValue = (row.timeTaken.wrappedValue - Decimal(intValue)) * 100
+                                        let intDecimalValue = extractIntegerPart(decimalValue)
+                                        
+                                        //let decimalValue = row.timeTaken.wrappedValue - (Decimal(intValue) as Decimal)
+                                        //let floorNumber = floor(Double(intValue)/60)
+                                        //Text(String(intValue))
+                                        // Text("\(row.workout.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
+                                        Text(String(row.distance.wrappedValue)).frame(maxWidth: .infinity, alignment: .leading)
+                                        Text("\(row.distanceMeasurement.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
+                                        // Text("\(formatDecimal(row.timeTaken.wrappedValue)) (Min.Seconds)").frame(maxWidth: .infinity, alignment: .leading)
+                                        //Text("\(floorNumber)").frame(maxWidth: .infinity, alignment: .leading)
+                                        Text("\(hoursValue)h " + "\(extraMinutesValue)m \(intDecimalValue)s").frame(maxWidth: .infinity, alignment: .leading)
+                                        Text("\(row.created_at.wrappedValue.formatted(.dateTime.year().month().day()))").frame(maxWidth: .infinity, alignment: .leading)
+                                    }
+                                    else {
+
+                                        let decimalValue = (row.timeTaken.wrappedValue - Decimal(intValue)) * 100
+                                        let intDecimalValue = extractIntegerPart(decimalValue)
+                                        
+                                        //let decimalValue = row.timeTaken.wrappedValue - (Decimal(intValue) as Decimal)
+                                        //let floorNumber = floor(Double(intValue)/60)
+                                        //Text(String(intValue))
+                                        // Text("\(row.workout.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
+                                        Text(String(row.distance.wrappedValue)).frame(maxWidth: .infinity, alignment: .leading)
+                                        Text("\(row.distanceMeasurement.wrappedValue)").frame(maxWidth: .infinity, alignment: .leading)
+                                        // Text("\(formatDecimal(row.timeTaken.wrappedValue)) (Min.Seconds)").frame(maxWidth: .infinity, alignment: .leading)
+                                        //Text("\(floorNumber)").frame(maxWidth: .infinity, alignment: .leading)
+                                        Text("\(intValue)m \(intDecimalValue)s").frame(maxWidth: .infinity, alignment: .leading)
+                                        Text("\(row.created_at.wrappedValue.formatted(.dateTime.year().month().day()))").frame(maxWidth: .infinity, alignment: .leading)
+                                    }
                                 }
                                 .padding()
                             }
